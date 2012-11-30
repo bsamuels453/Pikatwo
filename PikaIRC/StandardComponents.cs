@@ -77,6 +77,7 @@ namespace PikaIRC{
         public NickCollisionHandler(string nick, string password){
             _nick = nick;
             _password = password;
+            Enabled = true;
         }
 
 
@@ -90,7 +91,6 @@ namespace PikaIRC{
         }
 
         public void Reset(){
-            Enabled = true;
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod) {
@@ -98,7 +98,7 @@ namespace PikaIRC{
             if (msg.Command == "433"){
                 //change the nick
                 sendMethod.Invoke(
-                    IrcCommand.NickChange,
+                    IrcCommand.ChangeNick,
                     _nick + DateTime.Now.Millisecond
                     );
 
@@ -112,12 +112,40 @@ namespace PikaIRC{
                 }
             }
             //test to see if ghost worked
-            if (msg.Prefix.Contains("NickServ")
-                && msg.CommandParams.Contains("has been ghosted.")) {
+            if (msg.Prefix != null && msg.CommandParams != null){
+                if (msg.Prefix.Contains("NickServ")
+                    && msg.CommandParams.Contains("has been ghosted.")){
                     sendMethod.Invoke(
-                        IrcCommand.NickChange,
+                        IrcCommand.ChangeNick,
                         _nick
                         );
+                }
+            }
+        }
+    }
+
+    internal class PingResponder : IrcComponent{
+        public PingResponder(){
+            Enabled = true;
+        }
+
+        public void Dispose(){
+        }
+
+        public bool Enabled {
+            get;
+            set;
+        }
+
+        public void Reset(){
+        }
+
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
+            if (msg.Command == "PING"){//laugh it up kuraitou
+                sendMethod.Invoke(
+                    IrcCommand.Pong,
+                    msg.CommandParams
+                    );
             }
         }
     }
