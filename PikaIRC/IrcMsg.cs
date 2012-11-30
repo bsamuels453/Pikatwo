@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace PikaIRC {
-    class IrcMsg {
+    public class IrcMsg {
+        public string Prefix;
+        public string Command;
+        public string CommandParams;
+        public string Destination;
     }
 }
