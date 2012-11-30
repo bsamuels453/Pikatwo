@@ -37,13 +37,16 @@ namespace PikaIRC {
                     break;
                 }
 
+                OnIrcMsg.Invoke(input);
+
                 var msg = ParseInput(input);
 
                 foreach (var component in _components){
                     if (component.Enabled){
-                        component.HandleMsg(msg, _writeStream);
+                        component.HandleMsg(msg, SendCmd);
                     }
                 }
+                _writeStream.Flush();
             }
         }
 
@@ -70,16 +73,18 @@ namespace PikaIRC {
 
             //generate command parameters
             for (int i = 3; i < inputArgs.Count(); i++) {
-                if (inputArgs[i][0] == ':'){
-                    cmdParams = "";
+                if (inputArgs[i].Count() > 1){
+                    if (inputArgs[i][0] == ':'){
+                        cmdParams = "";
 
-                    //concat the args into a string
-                    var strLi = inputArgs.GetRange(i, inputArgs.Count - i);
-                    foreach (var s in strLi){
-                        cmdParams += s + " ";
+                        //concat the args into a string
+                        var strLi = inputArgs.GetRange(i, inputArgs.Count - i);
+                        foreach (var s in strLi){
+                            cmdParams += s + " ";
+                        }
+                        //remove trailing whitespace
+                        cmdParams = cmdParams.Remove(cmdParams.Count() - 1);
                     }
-                    //remove trailing whitespace
-                    cmdParams = cmdParams.Remove(cmdParams.Count() - 1);
                 }
             }
 
@@ -96,7 +101,6 @@ namespace PikaIRC {
             _client.Close();
             _readStream.Close();
             _writeStream.Close();
-            _isConnected = false;
             _closeReaderThread = true;
             foreach (var component in _components){
                 component.Dispose();
@@ -104,10 +108,6 @@ namespace PikaIRC {
         }
 
         void InternalConnect() {
-            if (_isConnected) {
-                return; //should this go quietly?
-            }
-
             if (_client != null) {
                 _readStream.Close();
                 _writeStream.Close();
@@ -131,7 +131,6 @@ namespace PikaIRC {
                 );
             _writeStream.Flush();
 
-            _isConnected = true;
         }
 
     }
