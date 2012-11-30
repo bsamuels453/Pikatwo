@@ -38,11 +38,11 @@ namespace PikaIRC{
         #endregion
     }
 
-    internal class IdentifyNick : IrcComponent{
+    internal class NickIdentifier : IrcComponent{
         readonly string _password;
         readonly string _nick;
 
-        public IdentifyNick(string nick, string password){
+        public NickIdentifier(string nick, string password){
             Enabled = true;
             _password = password;
             _nick = nick;

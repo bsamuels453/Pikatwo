@@ -49,7 +49,7 @@ namespace PikaIRC{
 
             //setup builtin components
             _components.Add(new JoinDefaultChannel(_defaultChannel));
-            _components.Add(new IdentifyNick(_userNick, _userPass));
+            _components.Add(new NickIdentifier(_userNick, _userPass));
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
         }
 

@@ -33,9 +33,8 @@ namespace PikaIRC {
                     }
                 }
 
-                if (_closeReaderThread){
+                if (_closeReaderThread)
                     break;
-                }
 
                 OnIrcMsg.Invoke(input);
 

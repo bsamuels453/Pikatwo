@@ -17,10 +17,11 @@ namespace Pikatwo {
             init.Address = "chat.freenode.net";
             init.Port = 6667;
             init.UserNick = "pikatwo";
-
+            init.DefaultChannel = "#pikadev";
+            init.UserPass = "benjamin1";
             //, 6667, "pikatwo", null, "#pikadev"
             var irc = new IrcInstance(init);
-
+            irc.OnIrcMsg += OnMsgRecv;
             irc.Connect();
 
         }
