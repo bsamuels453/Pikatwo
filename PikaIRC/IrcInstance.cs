@@ -14,7 +14,9 @@ namespace PikaIRC{
     public enum IrcCommand {
         Message,
         Join,
-        NickChange
+        ChangeNick,
+        Ping,
+        Pong
         //Disconnect
     }
     public partial class IrcInstance : IDisposable{
@@ -32,7 +34,7 @@ namespace PikaIRC{
 
         bool _disposed;
 
-        public IrcInstance(IrcInitData initData) {
+        public IrcInstance(IrcInitData initData, IEnumerable<IrcComponent> components=null) {
             _serverAddress = initData.Address;
             _serverPort = initData.Port;
             _userNick = initData.UserNick;
@@ -51,36 +53,9 @@ namespace PikaIRC{
             _components.Add(new JoinDefaultChannel(_defaultChannel));
             _components.Add(new NickIdentifier(_userNick, _userPass));
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
-        }
-
-        public void SendCmd(IrcCommand command, string destination, string param = null, bool flushNow = false){
-            Debug.Assert(_writeStream != null);
-            string cmd;
-            switch (command){
-                case IrcCommand.Message:
-                    cmd = "PRIVMSG";
-                    break;
-                case IrcCommand.Join:
-                    cmd = "JOIN";
-                    break;
-                case IrcCommand.NickChange:
-                    cmd = "NICK";
-                    break;
-                default:
-                    throw new Exception();
-            }
-            if (param != null)
-                _writeStream.WriteLine(
-                    string.Format("{0} {1} :{2}\r\n", cmd, destination, param)
-                    );
-
-            else
-                _writeStream.WriteLine(
-                    string.Format("{0} {1}\r\n", cmd, destination)
-                    );
-
-            if (flushNow){
-                _writeStream.Flush();
+            _components.Add(new PingResponder());
+            if (components != null){
+                _components.AddRange(components);
             }
         }
 
@@ -95,6 +70,45 @@ namespace PikaIRC{
 
                 InternalConnect();
                 _readerThread.Start();
+            }
+        }
+
+        public void SendCmd(IrcCommand command, string destination, string param = null, bool flushNow = false) {
+            Debug.Assert(_writeStream != null);
+            string cmd;
+            switch (command) {
+                case IrcCommand.Message:
+                    cmd = "PRIVMSG";
+                    break;
+                case IrcCommand.Join:
+                    cmd = "JOIN";
+                    break;
+                case IrcCommand.ChangeNick:
+                    cmd = "NICK";
+                    break;
+                case IrcCommand.Pong:
+                    cmd = "PONG";
+                    break;
+                case IrcCommand.Ping:
+                    cmd = "PING";
+                    break;
+                default:
+                    throw new Exception();
+            }
+            lock (_writeStream) {
+                if (param != null)
+                    _writeStream.WriteLine(
+                        string.Format("{0} {1} :{2}\r\n", cmd, destination, param)
+                        );
+
+                else
+                    _writeStream.WriteLine(
+                        string.Format("{0} {1}\r\n", cmd, destination)
+                        );
+
+                if (flushNow) {
+                    _writeStream.Flush();
+                }
             }
         }
 
