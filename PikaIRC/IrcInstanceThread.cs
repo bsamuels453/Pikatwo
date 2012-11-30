@@ -15,8 +15,8 @@ namespace PikaIRC {
         bool _closeReaderThread;
 
         TcpClient _client;
-        StreamReader _clientRead;
-        StreamWriter _clientWrite;
+        StreamReader _readStream;
+        StreamWriter _writeStream;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace PikaIRC {
 
         void ReaderThread(){
             string input;
-            while ((input = _clientRead.ReadLine()) != null){
+            while ((input = _readStream.ReadLine()) != null){
                 lock (_clientCommandQueue){
                     foreach (var task in _clientCommandQueue){
                         task.Invoke();
@@ -37,8 +37,13 @@ namespace PikaIRC {
                     break;
                 }
 
-                ParseInput(input);
+                var msg = ParseInput(input);
 
+                foreach (var component in _components){
+                    if (component.Enabled){
+                        component.HandleMsg(msg, _writeStream);
+                    }
+                }
             }
         }
 
@@ -83,12 +88,14 @@ namespace PikaIRC {
             retMsg.Command = cmd;
             retMsg.CommandParams = cmdParams;
             retMsg.Destination = destination;
+
+            return retMsg;
         }
 
         void DisposeThreadedAssets(){
             _client.Close();
-            _clientRead.Close();
-            _clientWrite.Close();
+            _readStream.Close();
+            _writeStream.Close();
             _isConnected = false;
             _closeReaderThread = true;
             foreach (var component in _components){
@@ -102,8 +109,8 @@ namespace PikaIRC {
             }
 
             if (_client != null) {
-                _clientRead.Close();
-                _clientWrite.Close();
+                _readStream.Close();
+                _writeStream.Close();
                 _client.Close();
             }
 
@@ -111,18 +118,18 @@ namespace PikaIRC {
             _client.ReceiveBufferSize = 65536;
 
             var stream = _client.GetStream();
-            _clientRead = new StreamReader(stream);
-            _clientWrite = new StreamWriter(stream);
+            _readStream = new StreamReader(stream);
+            _writeStream = new StreamWriter(stream);
 
-            _clientWrite.WriteLine(
+            _writeStream.WriteLine(
                 string.Format("NICK {0}\r\n", _userNick)
                 );
-            _clientWrite.Flush();
+            _writeStream.Flush();
 
-            _clientWrite.WriteLine(
+            _writeStream.WriteLine(
                 string.Format("USER {0} {1} * :{2}\r\n", "pikacs", _serverAddress, "pikacs")
                 );
-            _clientWrite.Flush();
+            _writeStream.Flush();
 
             _isConnected = true;
         }
