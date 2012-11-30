@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IrcComponent.cs" />
-    <Compile Include="IrcEngine.cs" />
+    <Compile Include="IrcInstanceThread.cs" />
     <Compile Include="IrcInstance.cs" />
     <Compile Include="IrcMsg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
