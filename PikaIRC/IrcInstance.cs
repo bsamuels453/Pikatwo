@@ -18,7 +18,9 @@ namespace PikaIRC{
         readonly string _userPass;
         readonly Task _readerThread;
 
+
         bool _disposed;
+        bool _isConnected;
 
         public IrcInstance(IrcInitData initData) {
             _serverAddress = initData.Address;
@@ -27,25 +29,28 @@ namespace PikaIRC{
             _userPass = initData.UserPass;
 
             _components = new List<IrcComponent>();
+            _clientCommandQueue = new List<InternalTask>();
 
             _closeReaderThread = false;
             _isConnected = false;
             _disposed = false;
 
             _readerThread = new Task(ReaderThread);
-            _readerThread.Start();
         }
 
+        //this is the only case in which a synchronous method can call
+        //one of the methods for use by the synchronouse read loop
         public void Connect(){
-            lock (ClientCommandQueue){
-                ClientCommandQueue += InternalConnect;
+            if (!_isConnected){
+                InternalConnect();
+                _readerThread.Start();
             }
         }
 
         public void Dispose(){
             if (!_disposed){
-                lock (ClientCommandQueue){
-                    ClientCommandQueue += DisposeStreams;
+                lock (_clientCommandQueue) {
+                    _clientCommandQueue.Add(DisposeThreadedAssets);
                 }
                 _disposed = true;
             }
