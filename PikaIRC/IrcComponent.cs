@@ -9,6 +9,7 @@ namespace PikaIRC {
     public interface IrcComponent : IDisposable {
 // ReSharper restore InconsistentNaming
         bool Enabled { get; set; }
-        void HandleMsg(IrcMsg msg, StreamWriter writer);
+        void Reset();
+        void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod);
     }
 }
