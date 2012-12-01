@@ -18,7 +18,7 @@ namespace Pikatwo {
             init.Port = 6667;
             init.UserNick = "pikatwo";
             init.DefaultChannel = "#testtdev";
-            init.UserPass = "569766";
+            init.UserPass = "";
             //, 6667, "pikatwo", null, "#pikadev"
             var irc = new IrcInstance(init);
             irc.OnIrcMsg += OnMsgRecv;
