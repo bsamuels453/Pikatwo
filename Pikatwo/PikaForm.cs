@@ -18,6 +18,7 @@ namespace Pikatwo{
             InitializeComponent();
             openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
+            DisconnectBut.Enabled = false;
             LoadLastUsedServer();
         }
 
@@ -32,8 +33,12 @@ namespace Pikatwo{
         }
 
         void DisconnectButClick(object sender, EventArgs e){
+            OnLogMsgInv("Disconnected from server");
+            OnLogMsgInv("------------------------");
             _irc.Dispose();
             _irc = null;
+            DisconnectBut.Enabled = false;
+            ConnectBut.Enabled = true;
         }
 
         void ConnectButClick(object sender, EventArgs e){
@@ -46,6 +51,8 @@ namespace Pikatwo{
 
             _irc = new IrcInstance(init, OnLogMsg);
             _irc.Connect();
+            ConnectBut.Enabled = false;
+            DisconnectBut.Enabled = true;
         }
 
         void LogBoxTextChanged(object sender, EventArgs e){

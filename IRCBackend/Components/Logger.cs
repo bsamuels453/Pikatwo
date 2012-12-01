@@ -35,8 +35,14 @@ namespace IRCBackend.Components{
                 _onIrcOutput.Invoke("Channel Joined");
             if (msg.Command == "KICK")
                 _onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
+            if (msg.Prefix.Contains("NickServ")
+                && msg.Trailing.Contains("You have been identified for"))
+                _onIrcOutput.Invoke("Nickserv authentication successful");
+            if (msg.Prefix.Contains("NickServ")
+                && msg.Trailing.Contains("has been ghosted.")){
+                _onIrcOutput.Invoke("Ghost command successful");
+            }
         }
-
         #endregion
     }
 }
