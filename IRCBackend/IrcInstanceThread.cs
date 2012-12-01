@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using PikaIRC;
 
-namespace PikaIRC {
+namespace IRCBackend {
     public partial class IrcInstance {
         delegate void InternalTask();
 

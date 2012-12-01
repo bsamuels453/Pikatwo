@@ -3,16 +3,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using IRCBackend.Components;
+using PikaIRC;
 using PikaIRC.Components;
 
 #endregion
 
-namespace PikaIRC{
+namespace IRCBackend{
     public enum IrcCommand {
         Message,
         Join,
