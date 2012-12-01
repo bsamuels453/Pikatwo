@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace Pikatwo{
             init.DefaultChannel = DefaultChannelTexbox.Text;
             init.UserPass = UserPasswordTexbox.Text;
 
-            _irc = new IrcInstance(init, OnLogMsg);
+            _irc = new IrcInstance(init, OnLogMsg, new []{new Chatlogger()});
             _irc.Connect();
             ConnectBut.Enabled = false;
             DisconnectBut.Enabled = true;
