@@ -34,7 +34,7 @@ namespace PikaIRC.Components {
                     );
 
                 //ghost them if possible
-                if (_password != null) {
+                if (!string.IsNullOrEmpty(_password)) {
                     sendMethod.Invoke(
                         IrcCommand.Message,
                         "Nickserv",

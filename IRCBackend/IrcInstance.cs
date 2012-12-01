@@ -40,8 +40,8 @@ namespace PikaIRC{
             _serverAddress = initData.Address;
             _serverPort = initData.Port;
             _userNick = initData.UserNick;
-            _userPass = initData.UserPass;
             _defaultChannel = initData.DefaultChannel;
+            _userPass = initData.UserPass ?? "";
 
             _components = new List<IrcComponent>();
             _clientCommandQueue = new List<InternalTask>();
@@ -54,7 +54,9 @@ namespace PikaIRC{
 
             //setup builtin components
             _components.Add(new JoinDefaultChannel(_defaultChannel));
-            _components.Add(new NickIdentifier(_userNick, _userPass));
+            if(_userPass != ""){
+                _components.Add(new NickIdentifier(_userNick, _userPass));
+            }
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
             _components.Add(new PingResponder());
             _components.Add(new RejoinPostKick());
