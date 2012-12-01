@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using IRCBackend.Components;
 using PikaIRC.Components;
 
 #endregion
@@ -24,7 +25,8 @@ namespace PikaIRC{
     public partial class IrcInstance : IDisposable{
         public delegate void OnIrcInput(string msg);
         public delegate void SendIrcCmd(IrcCommand command, string destination, string param=null, bool flushNow=false);
-        public event OnIrcInput OnIrcMsg;
+
+        readonly OnIrcInput _onIrcOutput;
 
         readonly string _serverAddress;
         readonly int _serverPort;
@@ -37,7 +39,7 @@ namespace PikaIRC{
 
         bool _disposed;
 
-        public IrcInstance(IrcInitData initData, IEnumerable<IrcComponent> components=null) {
+        public IrcInstance(IrcInitData initData, OnIrcInput loggingCallback, IEnumerable<IrcComponent> components = null) {
             _serverAddress = initData.Address;
             _serverPort = initData.Port;
             _userNick = initData.UserNick;
@@ -62,6 +64,10 @@ namespace PikaIRC{
             _components.Add(new PingResponder());
             _components.Add(new RejoinPostKick());
             _components.Add(new ConnectionTester(Reconnect, SendCmd));
+            if (loggingCallback != null){
+                _onIrcOutput = loggingCallback;
+                _components.Add(new Logger(_onIrcOutput));
+            }
             if (components != null){
                 _components.AddRange(components);
             }
@@ -70,6 +76,7 @@ namespace PikaIRC{
         //this is the only case in which a synchronous method can call
         //one of the methods for use by the synchronouse read loop
         public void Connect(){
+            _onIrcOutput.Invoke("Starting connection");
             if (_readerThread.Status != TaskStatus.Running) {
                 _clientCommandQueue.Clear();
                 foreach (var component in _components){

@@ -45,9 +45,8 @@ namespace Pikatwo {
             init.DefaultChannel = DefaultChannelTexbox.Text;
             init.UserPass = UserPasswordTexbox.Text;
 
-             _irc = new IrcInstance(init);
-             _irc.OnIrcMsg += OnLogMsg;
-             _irc.Connect();
+            _irc = new IrcInstance(init, OnLogMsg);
+            _irc.Connect();
         }
 
         private void LogBoxTextChanged(object sender, EventArgs e) {
@@ -136,7 +135,7 @@ namespace Pikatwo {
         }
         delegate void MsgLog(string str);
         void OnLogMsgInv(string str){
-            LogTextbox.Text += str + '\n';
+            LogTextbox.Text += ":" + str + Environment.NewLine;
         }
 
         struct SaveFileFmt{

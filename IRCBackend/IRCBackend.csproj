@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Components\ConnectionCheck.cs" />
     <Compile Include="Components\DefaultChannelJoin.cs" />
+    <Compile Include="Components\Logger.cs" />
     <Compile Include="Components\NickCollisionHandler.cs" />
     <Compile Include="Components\NickIdentifier.cs" />
     <Compile Include="Components\PingResponder.cs" />

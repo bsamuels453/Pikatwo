@@ -44,7 +44,6 @@ namespace Pikatwo {
             this.ConnectBut = new System.Windows.Forms.Button();
             this.DisconnectBut = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.LogTextbox = new System.Windows.Forms.TextBox();
             this.Options = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -54,6 +53,7 @@ namespace Pikatwo {
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.LogTextbox = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Options.SuspendLayout();
@@ -220,20 +220,6 @@ namespace Pikatwo {
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Log";
             // 
-            // LogTextbox
-            // 
-            this.LogTextbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTextbox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LogTextbox.Location = new System.Drawing.Point(3, 16);
-            this.LogTextbox.Multiline = true;
-            this.LogTextbox.Name = "LogTextbox";
-            this.LogTextbox.ReadOnly = true;
-            this.LogTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextbox.Size = new System.Drawing.Size(311, 117);
-            this.LogTextbox.TabIndex = 0;
-            this.LogTextbox.Text = "Hippo";
-            this.LogTextbox.TextChanged += new System.EventHandler(this.LogBoxTextChanged);
-            // 
             // Options
             // 
             this.Options.Controls.Add(this.checkBox3);
@@ -319,6 +305,17 @@ namespace Pikatwo {
             this.saveFileDialog1.Filter = "|*.irc";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialog1FileOk);
             // 
+            // LogTextbox
+            // 
+            this.LogTextbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogTextbox.Location = new System.Drawing.Point(3, 16);
+            this.LogTextbox.Name = "LogTextbox";
+            this.LogTextbox.ReadOnly = true;
+            this.LogTextbox.Size = new System.Drawing.Size(311, 117);
+            this.LogTextbox.TabIndex = 0;
+            this.LogTextbox.Text = "";
+            this.LogTextbox.TextChanged += new System.EventHandler(this.LogBoxTextChanged);
+            // 
             // PikaForm
             // 
             this.AutoSize = true;
@@ -336,7 +333,6 @@ namespace Pikatwo {
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.Options.ResumeLayout(false);
             this.Options.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -373,9 +369,9 @@ namespace Pikatwo {
         private GroupBox groupBox3;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel2;
-        private TextBox LogTextbox;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
+        private RichTextBox LogTextbox;
     }
 }
 

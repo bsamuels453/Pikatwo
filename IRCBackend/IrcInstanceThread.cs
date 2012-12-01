@@ -43,13 +43,12 @@ namespace PikaIRC {
                 if (_closeReaderThread)
                     break;
 
-                OnIrcMsg.Invoke(input);
-
                 var msg = ParseInput(input);
 
                                 //ugly hack to get the hostname that we ended up getting connected to
                 lock (_hostName){
                     if (_hostName == ""){
+                        _onIrcOutput.Invoke("Host name resolved");
                         _hostName = msg.Prefix;
                     }
                 }
