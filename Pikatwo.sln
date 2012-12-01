@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pikatwo", "Pikatwo\Pikatwo.csproj", "{4858A776-BF51-4B8B-924E-287E41431790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PikaIRC", "PikaIRC\PikaIRC.csproj", "{CFF81E68-8567-4479-B0C5-BA4193FE8011}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRCBackend", "IRCBackend\IRCBackend.csproj", "{CFF81E68-8567-4479-B0C5-BA4193FE8011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -80,9 +80,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PikaIRC\PikaIRC.csproj">
+    <ProjectReference Include="..\IRCBackend\IRCBackend.csproj">
       <Project>{CFF81E68-8567-4479-B0C5-BA4193FE8011}</Project>
-      <Name>PikaIRC</Name>
+      <Name>IRCBackend</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

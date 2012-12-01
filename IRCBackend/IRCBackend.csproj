@@ -8,8 +8,8 @@
     <ProjectGuid>{CFF81E68-8567-4479-B0C5-BA4193FE8011}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PikaIRC</RootNamespace>
-    <AssemblyName>PikaIRC</AssemblyName>
+    <RootNamespace>IRCBackend</RootNamespace>
+    <AssemblyName>IRCBackend</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
