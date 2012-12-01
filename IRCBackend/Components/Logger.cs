@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using PikaIRC;
 
-namespace IRCBackend.Components {
-    class Logger : IrcComponent {
+#endregion
+
+namespace IRCBackend.Components{
+    internal class Logger : IrcComponent{
         readonly IrcInstance.OnIrcInput _onIrcOutput;
 
         public Logger(IrcInstance.OnIrcInput onOutput){
@@ -13,17 +13,14 @@ namespace IRCBackend.Components {
             Enabled = true;
         }
 
+        #region IrcComponent Members
+
         public void Dispose(){
-            
         }
 
-        public bool Enabled {
-            get;
-            set;
-        }
+        public bool Enabled { get; set; }
 
         public void Reset(){
-
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
@@ -39,5 +36,7 @@ namespace IRCBackend.Components {
             if (msg.Command == "KICK")
                 _onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
         }
+
+        #endregion
     }
 }

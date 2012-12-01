@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using IRCBackend;
 
-namespace PikaIRC.Components {
-    internal class NickIdentifier : IrcComponent {
+#endregion
+
+namespace PikaIRC.Components{
+    internal class NickIdentifier : IrcComponent{
         readonly string _nick;
         readonly string _password;
 
-        public NickIdentifier(string nick, string password) {
+        public NickIdentifier(string nick, string password){
             Enabled = true;
             _password = password;
             _nick = nick;
@@ -17,17 +17,17 @@ namespace PikaIRC.Components {
 
         #region IrcComponent Members
 
-        public void Dispose() {
+        public void Dispose(){
         }
 
         public bool Enabled { get; set; }
 
-        public void Reset() {
+        public void Reset(){
             Enabled = true;
         }
 
-        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod) {
-            if (msg.Command == "376") { //end of motd
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
+            if (msg.Command == "376"){ //end of motd
                 sendMethod.Invoke(
                     IrcCommand.Message,
                     "Nickserv",

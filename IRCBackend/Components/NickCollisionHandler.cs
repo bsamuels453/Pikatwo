@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using IRCBackend;
 
-namespace PikaIRC.Components {
-    internal class NickCollisionHandler : IrcComponent {
+#endregion
+
+namespace PikaIRC.Components{
+    internal class NickCollisionHandler : IrcComponent{
         readonly string _nick;
         readonly string _password;
 
-        public NickCollisionHandler(string nick, string password) {
+        public NickCollisionHandler(string nick, string password){
             _nick = nick;
             _password = password;
             Enabled = true;
@@ -17,17 +18,17 @@ namespace PikaIRC.Components {
 
         #region IrcComponent Members
 
-        public void Dispose() {
+        public void Dispose(){
         }
 
         public bool Enabled { get; set; }
 
-        public void Reset() {
+        public void Reset(){
         }
 
-        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod) {
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
             //someone else is already using this nick
-            if (msg.Command == "433") {
+            if (msg.Command == "433"){
                 //change the nick
                 sendMethod.Invoke(
                     IrcCommand.ChangeNick,
@@ -35,7 +36,7 @@ namespace PikaIRC.Components {
                     );
 
                 //ghost them if possible
-                if (!string.IsNullOrEmpty(_password)) {
+                if (!string.IsNullOrEmpty(_password)){
                     sendMethod.Invoke(
                         IrcCommand.Message,
                         "Nickserv",
@@ -45,7 +46,7 @@ namespace PikaIRC.Components {
             }
             //test to see if ghost worked
             if (msg.Prefix.Contains("NickServ")
-                && msg.CommandParams.Contains("has been ghosted.")) {
+                && msg.CommandParams.Contains("has been ghosted.")){
                 sendMethod.Invoke(
                     IrcCommand.ChangeNick,
                     _nick

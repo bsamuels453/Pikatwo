@@ -1,44 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using IRCBackend;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PikaIRC;
 
-namespace Pikatwo {
-    public partial class PikaForm : Form {
+#endregion
+
+namespace Pikatwo{
+    public partial class PikaForm : Form{
         IrcInstance _irc;
 
-        public PikaForm() {
+        public PikaForm(){
             InitializeComponent();
-            openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory()+@"\data\";
+            openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             LoadLastUsedServer();
         }
 
         #region input
 
-        private void SaveButClick(object sender, EventArgs e) {
+        void SaveButClick(object sender, EventArgs e){
             saveFileDialog1.ShowDialog();
         }
 
-        private void LoadButClick(object sender, EventArgs e) {
+        void LoadButClick(object sender, EventArgs e){
             openFileDialog1.ShowDialog();
         }
 
-        private void DisconnectButClick(object sender, EventArgs e) {
+        void DisconnectButClick(object sender, EventArgs e){
             _irc.Dispose();
             _irc = null;
         }
 
-        private void ConnectButClick(object sender, EventArgs e) {
+        void ConnectButClick(object sender, EventArgs e){
             var init = new IrcInitData();
             init.Address = ServerAddressTexbox.Text;
             init.Port = int.Parse(ServerPortTexBox.Text);
@@ -50,12 +48,12 @@ namespace Pikatwo {
             _irc.Connect();
         }
 
-        private void LogBoxTextChanged(object sender, EventArgs e) {
+        void LogBoxTextChanged(object sender, EventArgs e){
             LogTextbox.SelectionStart = LogTextbox.Text.Length;
             LogTextbox.ScrollToCaret();
         }
 
-        private void SaveFileDialog1FileOk(object sender, CancelEventArgs e) {
+        void SaveFileDialog1FileOk(object sender, CancelEventArgs e){
             var saveData = new SaveFileFmt();
             saveData.ServerName = ServerAddressTexbox.Text;
             saveData.ServerPort = ServerPortTexBox.Text;
@@ -72,7 +70,7 @@ namespace Pikatwo {
             SaveLastUsedServer(saveFileDialog1.FileName);
         }
 
-        private void OpenFileDialog1FileOk(object sender, CancelEventArgs e) {
+        void OpenFileDialog1FileOk(object sender, CancelEventArgs e){
             LoadFromFile(openFileDialog1.FileName);
             SaveLastUsedServer(openFileDialog1.FileName);
         }
@@ -80,6 +78,7 @@ namespace Pikatwo {
         #endregion
 
         #region loading/unloading
+
         void LoadFromFile(string fileName){
             string s;
             using (var sr = new StreamReader(fileName)){
@@ -93,14 +92,13 @@ namespace Pikatwo {
             DefaultChannelTexbox.Text = saveData.DefaultChannel;
             UserNickTextbox.Text = saveData.Nick;
             UserPasswordTexbox.Text = saveData.NickPass;
-
         }
 
         void SaveLastUsedServer(string fileName){
             if (!Directory.Exists("/data")){
                 Directory.CreateDirectory("data");
             }
-            using (var sw = new StreamWriter("data/lastusedserver.txt", false)) {
+            using (var sw = new StreamWriter("data/lastusedserver.txt", false)){
                 sw.WriteLine(fileName);
                 sw.Flush();
                 sw.Close();
@@ -108,12 +106,12 @@ namespace Pikatwo {
         }
 
         void LoadLastUsedServer(){
-            if (!Directory.Exists("data")) {
+            if (!Directory.Exists("data")){
                 Directory.CreateDirectory("data");
             }
             string s;
-            try {
-                using (var sr = new StreamReader("data/lastusedserver.txt")) {
+            try{
+                using (var sr = new StreamReader("data/lastusedserver.txt")){
                     s = sr.ReadLine();
                     sr.Close();
                     if (s == "")
@@ -126,36 +124,43 @@ namespace Pikatwo {
                     sw.Close();
                 }
             }
-
         }
 
         #endregion
 
-        void OnLogMsg(string str) {
-            this.Invoke(new MsgLog(OnLogMsgInv), str);
+        void OnLogMsg(string str){
+            Invoke(new MsgLog(OnLogMsgInv), str);
         }
-        delegate void MsgLog(string str);
+
         void OnLogMsgInv(string str){
             LogTextbox.Text += ":" + str + Environment.NewLine;
         }
 
+        #region Nested type: MsgLog
+
+        delegate void MsgLog(string str);
+
+        #endregion
+
+        #region Nested type: SaveFileFmt
+
         struct SaveFileFmt{
             const string _key = "964d72e72d053d501f2949969849b96c";
 
-            public string ServerName;
-            public string ServerPort;
             public string DefaultChannel;
             public string Nick;
             public string NickPass;
+            public string ServerName;
+            public string ServerPort;
 
             public void CryptPassword(){
                 string nStr = "";
 
                 for (int i = 0; i < NickPass.Count(); i++){
-                    int keyPosition = i % _key.Length;
+                    int keyPosition = i%_key.Length;
                     uint keyCode = _key[keyPosition];
                     uint combinedCode = NickPass[i] ^ keyCode;
-                    char combinedChar = (char)combinedCode;
+                    char combinedChar = (char) combinedCode;
                     nStr += combinedChar;
                 }
 
@@ -163,5 +168,6 @@ namespace Pikatwo {
             }
         }
 
+        #endregion
     }
 }

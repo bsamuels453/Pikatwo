@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -6,27 +8,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using PikaIRC;
 
-namespace IRCBackend {
-    public partial class IrcInstance {
-        delegate void InternalTask();
+#endregion
 
-        #region stuff that synchronous methods shouldnt touch except for ctor
-        bool _closeReaderThread;
-
-        TcpClient _client;
-        StreamReader _readStream;
-        StreamWriter _writeStream;
-
-        #endregion
-
-        //these must be locked before using with exception of ctor
-        readonly List<IrcComponent> _components;
+namespace IRCBackend{
+    public partial class IrcInstance{
         readonly List<InternalTask> _clientCommandQueue;
+        readonly List<IrcComponent> _components;
 
         void ReaderThread(){
             string input = "";
             while (true){
-                try {
+                try{
                     input = _readStream.ReadLine();
                 }
                 catch (IOException e){
@@ -34,7 +26,7 @@ namespace IRCBackend {
                 }
 
                 lock (_clientCommandQueue){
-                    for(int i=0; i<_clientCommandQueue.Count; i++){
+                    for (int i = 0; i < _clientCommandQueue.Count; i++){
                         _clientCommandQueue[i].Invoke();
                     }
                 }
@@ -44,7 +36,7 @@ namespace IRCBackend {
 
                 var msg = ParseInput(input);
 
-                                //ugly hack to get the hostname that we ended up getting connected to
+                //ugly hack to get the hostname that we ended up getting connected to
                 lock (_hostName){
                     if (_hostName == ""){
                         _onIrcOutput.Invoke("Host name resolved");
@@ -82,10 +74,10 @@ namespace IRCBackend {
             }
 
             //genreate commandparams and trailing
-            if (inputArgs.Count() > cmdIndex+1) {
+            if (inputArgs.Count() > cmdIndex + 1){
                 cmdIndex++;
                 int trailingStartPos = -1;
-                for (int i = cmdIndex; i < inputArgs.Count(); i++) {
+                for (int i = cmdIndex; i < inputArgs.Count(); i++){
                     if (inputArgs[i][0] == ':'){
                         trailing = "";
 
@@ -100,7 +92,7 @@ namespace IRCBackend {
                         break;
                     }
                 }
-                if (trailingStartPos > cmdIndex) {
+                if (trailingStartPos > cmdIndex){
                     for (int i = cmdIndex; i < trailingStartPos; i++){
                         if (!inputArgs[i].Contains(_userNick)){
                             cmdParams += inputArgs[i] + " ";
@@ -146,7 +138,7 @@ namespace IRCBackend {
         void InternalReconnect(){
             DisposeThreadedAssets();
             _clientCommandQueue.Clear();
-            foreach (var component in _components) {
+            foreach (var component in _components){
                 component.Reset();
             }
             InternalConnect();
@@ -158,8 +150,8 @@ namespace IRCBackend {
             }
         }
 
-        void InternalConnect() {
-            if (_client != null) {
+        void InternalConnect(){
+            if (_client != null){
                 _readStream.Close();
                 _writeStream.Close();
                 _client.Close();
@@ -167,7 +159,7 @@ namespace IRCBackend {
             //I WONT TELL ANYONE IF YOU WONT
             RetryConnect:
             //AHAHAHAHAHAHAAHAH
-            try {
+            try{
                 _client = new TcpClient(_serverAddress, _serverPort);
             }
             catch (SocketException){
@@ -189,8 +181,21 @@ namespace IRCBackend {
                 string.Format("USER {0} {1} * :{2}\r\n", "pikacs", _serverAddress, "pikacs")
                 );
             _writeStream.Flush();
-
         }
 
+        #region Nested type: InternalTask
+
+        delegate void InternalTask();
+
+        #endregion
+
+        #region stuff that synchronous methods shouldnt touch except for ctor
+
+        TcpClient _client;
+        bool _closeReaderThread;
+        StreamReader _readStream;
+        StreamWriter _writeStream;
+
+        #endregion
     }
 }

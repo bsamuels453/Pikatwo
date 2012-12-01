@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using IRCBackend;
 
-namespace PikaIRC {
+#endregion
+
+namespace PikaIRC{
 // ReSharper disable InconsistentNaming
-    public interface IrcComponent : IDisposable {
+    public interface IrcComponent : IDisposable{
 // ReSharper restore InconsistentNaming
         bool Enabled { get; set; }
         void Reset();
