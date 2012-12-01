@@ -8,6 +8,6 @@ namespace PikaIRC {
         public string Prefix;
         public string Command;
         public string CommandParams;
-        public string Destination;
+        public string Trailing;
     }
 }

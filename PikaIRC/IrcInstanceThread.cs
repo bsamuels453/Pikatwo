@@ -50,39 +50,54 @@ namespace PikaIRC {
         }
 
         IrcMsg ParseInput(string input){
-            string prefix = null;
-            string cmd = null;
-            string cmdParams = null;
-            string destination = null;
+            string prefix = "";
+            string cmd = "";
+            string cmdParams = "";
+            string trailing = "";
+            int cmdIndex;
 
             List<string> inputArgs = input.Split(' ').ToList();
 
-            //generate prefix/cmd/dest
-            //for some reason, "PING" is the prefix during pings instead of the 
-            //command, so fix for that
-            if (inputArgs[0] != "PING") {
+            //generate prefix/cmd
+            if (inputArgs[0][0] == ':'){
                 prefix = inputArgs[0];
                 cmd = inputArgs[1];
-                destination = inputArgs[2];
+                cmdIndex = 1;
             }
             else{
                 cmd = inputArgs[0];
-                cmdParams = inputArgs[1];
+                cmdIndex = 0;
             }
 
-            //generate command parameters
-            for (int i = 3; i < inputArgs.Count(); i++) {
-                if (inputArgs[i].Count() > 1){
+            //genreate commandparams and trailing
+            if (inputArgs.Count() > cmdIndex+1) {
+                cmdIndex++;
+                int trailingStartPos = -1;
+                for (int i = cmdIndex; i < inputArgs.Count(); i++) {
                     if (inputArgs[i][0] == ':'){
-                        cmdParams = "";
+                        trailing = "";
 
                         //concat the args into a string
                         var strLi = inputArgs.GetRange(i, inputArgs.Count - i);
                         foreach (var s in strLi){
-                            cmdParams += s + " ";
+                            trailing += s + " ";
                         }
                         //remove trailing whitespace
-                        cmdParams = cmdParams.Remove(cmdParams.Count() - 1);
+                        trailing = trailing.Remove(trailing.Count() - 1);
+                        trailingStartPos = i;
+                        break;
+                    }
+                }
+                if (trailingStartPos > cmdIndex) {
+                    for (int i = cmdIndex; i < trailingStartPos; i++){
+                        if (!inputArgs[i].Contains(_userNick)){
+                            cmdParams += inputArgs[i] + " ";
+                        }
+                    }
+                    //clip trailing whitespace
+                    if (cmdParams.Any()){
+                        if (cmdParams.Last() == ' ')
+                            cmdParams = cmdParams.Remove(cmdParams.Count() - 1);
                     }
                 }
             }
@@ -91,7 +106,8 @@ namespace PikaIRC {
             retMsg.Prefix = prefix;
             retMsg.Command = cmd;
             retMsg.CommandParams = cmdParams;
-            retMsg.Destination = destination;
+            retMsg.Trailing = trailing;
+
 
             return retMsg;
         }
