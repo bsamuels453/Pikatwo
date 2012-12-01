@@ -51,7 +51,8 @@ namespace Pikatwo {
         }
 
         private void LogBoxTextChanged(object sender, EventArgs e) {
-
+            LogTextbox.SelectionStart = LogTextbox.Text.Length;
+            LogTextbox.ScrollToCaret();
         }
 
         private void SaveFileDialog1FileOk(object sender, CancelEventArgs e) {
@@ -73,6 +74,7 @@ namespace Pikatwo {
 
         private void OpenFileDialog1FileOk(object sender, CancelEventArgs e) {
             LoadFromFile(openFileDialog1.FileName);
+            SaveLastUsedServer(openFileDialog1.FileName);
         }
 
         #endregion
@@ -91,7 +93,7 @@ namespace Pikatwo {
             DefaultChannelTexbox.Text = saveData.DefaultChannel;
             UserNickTextbox.Text = saveData.Nick;
             UserPasswordTexbox.Text = saveData.NickPass;
-            SaveLastUsedServer(fileName);
+
         }
 
         void SaveLastUsedServer(string fileName){
@@ -106,13 +108,13 @@ namespace Pikatwo {
         }
 
         void LoadLastUsedServer(){
-            if (!Directory.Exists("/data")) {
+            if (!Directory.Exists("data")) {
                 Directory.CreateDirectory("data");
             }
             string s;
             try {
                 using (var sr = new StreamReader("data/lastusedserver.txt")) {
-                    s = sr.ReadToEnd();
+                    s = sr.ReadLine();
                     sr.Close();
                     if (s == "")
                         return;
