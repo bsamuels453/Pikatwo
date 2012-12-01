@@ -242,7 +242,7 @@ namespace PikaIRC{
                     _timeSincePongRecv.Restart();
                 }
 
-                Thread.Sleep(10000);
+                Thread.Sleep(15000);
 
                 //OH MAN HERES ANOTHER ONE
             WaitForActive1:
@@ -253,7 +253,7 @@ namespace PikaIRC{
                 }
                 bool reconnect = false;
                 lock (_timeSincePongRecv){
-                    //if we dont recieve a pong after a 5s, then disconnected
+                    //if we dont recieve a pong after 15s, then disconnected
                     if (_timeSincePongRecv.IsRunning){
                         reconnect = true;
                     }
@@ -264,7 +264,7 @@ namespace PikaIRC{
                     _reconnectMethod.Invoke();
                     break;
                 }
-                Thread.Sleep(30000);
+                Thread.Sleep(60000);
 
             WaitForActive2:
                 if (!_pingThreadActive) {
