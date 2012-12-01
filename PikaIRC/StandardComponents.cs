@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.IO;
 
 #endregion
 
@@ -16,22 +15,23 @@ namespace PikaIRC{
 
         #region IrcComponent Members
 
-        public void Dispose(){}
+        public void Dispose(){
+        }
 
-        public bool Enabled{get;set;}
+        public bool Enabled { get; set; }
 
         public void Reset(){
             Enabled = true;
         }
 
-        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod) {
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
             if (msg.Command == "376"){ //end of motd
                 sendMethod.Invoke(
                     IrcCommand.Join,
                     _channelToJoin
                     );
-               
-                Enabled = false;//this component has no purpose after joining the default channel
+
+                Enabled = false; //this component has no purpose after joining the default channel
             }
         }
 
@@ -39,8 +39,8 @@ namespace PikaIRC{
     }
 
     internal class NickIdentifier : IrcComponent{
-        readonly string _password;
         readonly string _nick;
+        readonly string _password;
 
         public NickIdentifier(string nick, string password){
             Enabled = true;
@@ -48,10 +48,12 @@ namespace PikaIRC{
             _nick = nick;
         }
 
+        #region IrcComponent Members
+
         public void Dispose(){
         }
 
-        public bool Enabled {get;set;}
+        public bool Enabled { get; set; }
 
         public void Reset(){
             Enabled = true;
@@ -68,6 +70,8 @@ namespace PikaIRC{
                 Enabled = false; //this component has no purpose after joining the default channel
             }
         }
+
+        #endregion
     }
 
     internal class NickCollisionHandler : IrcComponent{
@@ -80,20 +84,17 @@ namespace PikaIRC{
             Enabled = true;
         }
 
+        #region IrcComponent Members
 
         public void Dispose(){
-
         }
 
-        public bool Enabled {
-            get;
-            set;
-        }
+        public bool Enabled { get; set; }
 
         public void Reset(){
         }
 
-        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod) {
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
             //someone else is already using this nick
             if (msg.Command == "433"){
                 //change the nick
@@ -112,16 +113,43 @@ namespace PikaIRC{
                 }
             }
             //test to see if ghost worked
-            if (msg.Prefix != null && msg.CommandParams != null){
-                if (msg.Prefix.Contains("NickServ")
-                    && msg.CommandParams.Contains("has been ghosted.")){
-                    sendMethod.Invoke(
-                        IrcCommand.ChangeNick,
-                        _nick
-                        );
-                }
+            if (msg.Prefix.Contains("NickServ")
+                && msg.CommandParams.Contains("has been ghosted.")){
+                sendMethod.Invoke(
+                    IrcCommand.ChangeNick,
+                    _nick
+                    );
             }
         }
+
+        #endregion
+    }
+
+    internal class RejoinPostKick : IrcComponent{
+        public RejoinPostKick(){
+            Enabled = true;
+        }
+
+        #region IrcComponent Members
+
+        public void Dispose(){
+        }
+
+        public bool Enabled { get; set; }
+
+        public void Reset(){
+        }
+
+        public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
+            if (msg.Command == "KICK"){
+                sendMethod.Invoke(
+                    IrcCommand.Join,
+                    msg.CommandParams
+                    );
+            }
+        }
+
+        #endregion
     }
 
     internal class PingResponder : IrcComponent{
@@ -129,24 +157,25 @@ namespace PikaIRC{
             Enabled = true;
         }
 
+        #region IrcComponent Members
+
         public void Dispose(){
         }
 
-        public bool Enabled {
-            get;
-            set;
-        }
+        public bool Enabled { get; set; }
 
         public void Reset(){
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
-            if (msg.Command == "PING"){//laugh it up kuraitou
+            if (msg.Command == "PING"){ //laugh it up kuraitou
                 sendMethod.Invoke(
                     IrcCommand.Pong,
-                    msg.CommandParams
+                    msg.Trailing
                     );
             }
         }
+
+        #endregion
     }
 }
