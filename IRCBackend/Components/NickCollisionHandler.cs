@@ -46,7 +46,7 @@ namespace IRCBackend.Components{
             }
             //test to see if ghost worked
             if (msg.Prefix.Contains("NickServ")
-                && msg.CommandParams.Contains("has been ghosted.")){
+                && msg.Trailing.Contains("has been ghosted.")){
                 sendMethod.Invoke(
                     IrcCommand.ChangeNick,
                     _nick
