@@ -54,6 +54,7 @@ namespace PikaIRC{
             _components.Add(new NickIdentifier(_userNick, _userPass));
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
             _components.Add(new PingResponder());
+            _components.Add(new RejoinPostKick());
             if (components != null){
                 _components.AddRange(components);
             }
