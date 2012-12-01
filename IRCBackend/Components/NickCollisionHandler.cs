@@ -13,15 +13,12 @@ namespace IRCBackend.Components{
         public NickCollisionHandler(string nick, string password){
             _nick = nick;
             _password = password;
-            Enabled = true;
         }
 
         #region IrcComponent Members
 
         public void Dispose(){
         }
-
-        public bool Enabled { get; set; }
 
         public void Reset(){
         }

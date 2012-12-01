@@ -45,9 +45,7 @@ namespace IRCBackend{
                 }
 
                 foreach (var component in _components){
-                    if (component.Enabled){
-                        component.HandleMsg(msg, SendCmd);
-                    }
+                    component.HandleMsg(msg, SendCmd);
                 }
                 _writeStream.Flush();
             }

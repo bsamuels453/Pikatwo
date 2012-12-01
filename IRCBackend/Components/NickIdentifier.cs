@@ -10,7 +10,6 @@ namespace IRCBackend.Components{
         readonly string _password;
 
         public NickIdentifier(string nick, string password){
-            Enabled = true;
             _password = password;
             _nick = nick;
         }
@@ -20,10 +19,7 @@ namespace IRCBackend.Components{
         public void Dispose(){
         }
 
-        public bool Enabled { get; set; }
-
         public void Reset(){
-            Enabled = true;
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
@@ -33,8 +29,6 @@ namespace IRCBackend.Components{
                     "Nickserv",
                     string.Format("IDENTIFY {0} {1}", _nick, _password)
                     );
-
-                Enabled = false; //this component has no purpose after joining the default channel
             }
         }
 

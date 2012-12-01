@@ -6,16 +6,10 @@ using PikaIRC;
 
 namespace IRCBackend.Components{
     internal class PingResponder : IrcComponent{
-        public PingResponder(){
-            Enabled = true;
-        }
-
         #region IrcComponent Members
 
         public void Dispose(){
         }
-
-        public bool Enabled { get; set; }
 
         public void Reset(){
         }

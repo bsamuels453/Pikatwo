@@ -10,15 +10,12 @@ namespace IRCBackend.Components{
 
         public Logger(IrcInstance.OnIrcInput onOutput){
             _onIrcOutput = onOutput;
-            Enabled = true;
         }
 
         #region IrcComponent Members
 
         public void Dispose(){
         }
-
-        public bool Enabled { get; set; }
 
         public void Reset(){
         }

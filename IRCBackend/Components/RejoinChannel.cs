@@ -6,16 +6,10 @@ using PikaIRC;
 
 namespace IRCBackend.Components{
     internal class RejoinPostKick : IrcComponent{
-        public RejoinPostKick(){
-            Enabled = true;
-        }
-
         #region IrcComponent Members
 
         public void Dispose(){
         }
-
-        public bool Enabled { get; set; }
 
         public void Reset(){
         }

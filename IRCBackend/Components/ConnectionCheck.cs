@@ -23,7 +23,6 @@ namespace IRCBackend.Components{
 
 
         public ConnectionTester(ReconnectMthd reconnectMethod, IrcInstance.SendIrcCmd sendMethod){
-            Enabled = true;
             _reconnectMethod = reconnectMethod;
             _sendMethod = sendMethod;
             _pingThreadActive = false;
@@ -35,8 +34,6 @@ namespace IRCBackend.Components{
         public void Dispose(){
             _pingThreadActive = false;
         }
-
-        public bool Enabled { get; set; }
 
         public void Reset(){
             _pingThreadActive = false;

@@ -10,7 +10,6 @@ namespace IRCBackend.Components{
 
         public JoinDefaultChannel(string channelName){
             _channelToJoin = channelName;
-            Enabled = true;
         }
 
         #region IrcComponent Members
@@ -18,10 +17,7 @@ namespace IRCBackend.Components{
         public void Dispose(){
         }
 
-        public bool Enabled { get; set; }
-
         public void Reset(){
-            Enabled = true;
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
@@ -30,8 +26,6 @@ namespace IRCBackend.Components{
                     IrcCommand.Join,
                     _channelToJoin
                     );
-
-                Enabled = false; //this component has no purpose after joining the default channel
             }
         }
 
