@@ -1,11 +1,11 @@
 ﻿#region
 
 using System;
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC{
+namespace IRCBackend{
 // ReSharper disable InconsistentNaming
     public interface IrcComponent : IDisposable{
 // ReSharper restore InconsistentNaming

@@ -1,10 +1,10 @@
 ﻿#region
 
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC.Components{
+namespace IRCBackend.Components{
     internal class NickIdentifier : IrcComponent{
         readonly string _nick;
         readonly string _password;

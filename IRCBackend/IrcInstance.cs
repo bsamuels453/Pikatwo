@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using IRCBackend.Components;
 using PikaIRC;
-using PikaIRC.Components;
 
 #endregion
 

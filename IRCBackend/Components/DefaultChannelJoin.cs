@@ -1,10 +1,10 @@
 ﻿#region
 
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC.Components{
+namespace IRCBackend.Components{
     internal class JoinDefaultChannel : IrcComponent{
         readonly string _channelToJoin;
 

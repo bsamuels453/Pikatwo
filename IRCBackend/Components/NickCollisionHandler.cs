@@ -1,11 +1,11 @@
 ﻿#region
 
 using System;
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC.Components{
+namespace IRCBackend.Components{
     internal class NickCollisionHandler : IrcComponent{
         readonly string _nick;
         readonly string _password;

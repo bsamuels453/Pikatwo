@@ -3,11 +3,11 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC.Components{
+namespace IRCBackend.Components{
     internal class ConnectionTester : IrcComponent{
         #region Delegates
 

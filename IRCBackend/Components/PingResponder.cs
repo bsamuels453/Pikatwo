@@ -1,10 +1,10 @@
 ﻿#region
 
-using IRCBackend;
+using PikaIRC;
 
 #endregion
 
-namespace PikaIRC.Components{
+namespace IRCBackend.Components{
     internal class PingResponder : IrcComponent{
         public PingResponder(){
             Enabled = true;
