@@ -95,19 +95,36 @@ namespace Pikatwo {
         }
 
         void SaveLastUsedServer(string fileName){
-            using (var sw = new StreamWriter("lastusedserver.txt")){
+            if (!Directory.Exists("/data")){
+                Directory.CreateDirectory("data");
+            }
+            using (var sw = new StreamWriter("data/lastusedserver.txt", false)) {
                 sw.WriteLine(fileName);
+                sw.Flush();
                 sw.Close();
             }
         }
 
         void LoadLastUsedServer(){
-            string s;
-            using (var sr = new StreamReader("data/lastusedserver.txt")){
-                s = sr.ReadToEnd();
-                sr.Close();
+            if (!Directory.Exists("/data")) {
+                Directory.CreateDirectory("data");
             }
-            LoadFromFile(s);
+            string s;
+            try {
+                using (var sr = new StreamReader("data/lastusedserver.txt")) {
+                    s = sr.ReadToEnd();
+                    sr.Close();
+                    if (s == "")
+                        return;
+                    LoadFromFile(s);
+                }
+            }
+            catch (Exception){
+                using (var sw = new StreamWriter("data/lastusedserver.txt")){
+                    sw.Close();
+                }
+            }
+
         }
 
         #endregion
