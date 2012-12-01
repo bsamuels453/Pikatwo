@@ -17,7 +17,8 @@ namespace PikaIRC{
         Join,
         ChangeNick,
         Ping,
-        Pong
+        Pong,
+        Quit
         //Disconnect
     }
     public partial class IrcInstance : IDisposable{
@@ -100,6 +101,9 @@ namespace PikaIRC{
                     cmd = "PING";
                     destination = _hostName;
                     break;
+                case IrcCommand.Quit:
+                    cmd = "QUIT";
+                    break;
                 default:
                     throw new Exception();
             }
@@ -122,6 +126,7 @@ namespace PikaIRC{
 
         public void Dispose(){
             if (!_disposed){
+                SendCmd(IrcCommand.Quit, "", null, true);
                 lock (_clientCommandQueue) {
                     _clientCommandQueue.Add(DisposeThreadedAssets);
                 }

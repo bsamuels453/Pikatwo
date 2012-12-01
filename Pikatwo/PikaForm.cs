@@ -13,28 +13,16 @@ using PikaIRC;
 
 namespace Pikatwo {
     public partial class PikaForm : Form {
+        IrcInstance _irc;
+
         public PikaForm() {
             InitializeComponent();
-
-            var init = new IrcInitData();
-            init.Address = "chat.freenode.net";
-            init.Port = 6667;
-            init.UserNick = "pikatwo";
-            init.DefaultChannel = "#testtdev";
-            init.UserPass = "";
-            //, 6667, "pikatwo", null, "#pikadev"
-           // var irc = new IrcInstance(init);
-            //irc.OnIrcMsg += OnMsgRecv;
-           // irc.Connect();
-            //LogTextWindow
-            openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory();
-            saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory();
+            openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory()+@"\data\";
+            saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             LoadLastUsedServer();
         }
 
-        static void OnMsgRecv(string str) {
-            System.Console.WriteLine(str);
-        }
+        #region input
 
         private void SaveButClick(object sender, EventArgs e) {
             saveFileDialog1.ShowDialog();
@@ -45,11 +33,21 @@ namespace Pikatwo {
         }
 
         private void DisconnectButClick(object sender, EventArgs e) {
-
+            _irc.Dispose();
+            _irc = null;
         }
 
         private void ConnectButClick(object sender, EventArgs e) {
+            var init = new IrcInitData();
+            init.Address = ServerAddressTexbox.Text;
+            init.Port = int.Parse(ServerPortTexBox.Text);
+            init.UserNick = UserNickTextbox.Text;
+            init.DefaultChannel = DefaultChannelTexbox.Text;
+            init.UserPass = UserPasswordTexbox.Text;
 
+             _irc = new IrcInstance(init);
+             _irc.OnIrcMsg += OnLogMsg;
+             _irc.Connect();
         }
 
         private void LogBoxTextChanged(object sender, EventArgs e) {
@@ -70,12 +68,16 @@ namespace Pikatwo {
                 sw.Write(s);
                 sw.Close();
             }
+            SaveLastUsedServer(saveFileDialog1.FileName);
         }
 
         private void OpenFileDialog1FileOk(object sender, CancelEventArgs e) {
             LoadFromFile(openFileDialog1.FileName);
         }
 
+        #endregion
+
+        #region loading/unloading
         void LoadFromFile(string fileName){
             string s;
             using (var sr = new StreamReader(fileName)){
@@ -89,6 +91,7 @@ namespace Pikatwo {
             DefaultChannelTexbox.Text = saveData.DefaultChannel;
             UserNickTextbox.Text = saveData.Nick;
             UserPasswordTexbox.Text = saveData.NickPass;
+            SaveLastUsedServer(fileName);
         }
 
         void SaveLastUsedServer(string fileName){
@@ -100,11 +103,21 @@ namespace Pikatwo {
 
         void LoadLastUsedServer(){
             string s;
-            using (var sr = new StreamReader("lastusedserver.txt")){
+            using (var sr = new StreamReader("data/lastusedserver.txt")){
                 s = sr.ReadToEnd();
                 sr.Close();
             }
             LoadFromFile(s);
+        }
+
+        #endregion
+
+        void OnLogMsg(string str) {
+            this.Invoke(new MsgLog(OnLogMsgInv), str);
+        }
+        delegate void MsgLog(string str);
+        void OnLogMsgInv(string str){
+            LogTextbox.Text += str + '\n';
         }
 
         struct SaveFileFmt{
