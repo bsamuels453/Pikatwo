@@ -25,11 +25,18 @@ namespace PikaIRC {
         readonly List<InternalTask> _clientCommandQueue;
 
         void ReaderThread(){
-            string input;
-            while ((input = _readStream.ReadLine()) != null){
+            string input = "";
+            while (true){
+                try {
+                    input = _readStream.ReadLine();
+                }
+                catch (IOException e){
+                    Reconnect();
+                }
+
                 lock (_clientCommandQueue){
-                    foreach (var task in _clientCommandQueue){
-                        task.Invoke();
+                    for(int i=0; i<_clientCommandQueue.Count; i++){
+                        _clientCommandQueue[i].Invoke();
                     }
                 }
 
@@ -39,6 +46,13 @@ namespace PikaIRC {
                 OnIrcMsg.Invoke(input);
 
                 var msg = ParseInput(input);
+
+                                //ugly hack to get the hostname that we ended up getting connected to
+                lock (_hostName){
+                    if (_hostName == ""){
+                        _hostName = msg.Prefix;
+                    }
+                }
 
                 foreach (var component in _components){
                     if (component.Enabled){
@@ -120,6 +134,30 @@ namespace PikaIRC {
             foreach (var component in _components){
                 component.Dispose();
             }
+            lock (_hostName){
+                _hostName = "";
+            }
+        }
+
+        void Reconnect(){
+            lock (_clientCommandQueue){
+                _clientCommandQueue.Add(InternalReconnect);
+            }
+        }
+
+        void InternalReconnect(){
+            DisposeThreadedAssets();
+            _clientCommandQueue.Clear();
+            foreach (var component in _components) {
+                component.Reset();
+            }
+            InternalConnect();
+            if (_readerThread.Status != TaskStatus.Running){
+                _readerThread.Start();
+            }
+            else{
+                _closeReaderThread = false;
+            }
         }
 
         void InternalConnect() {
@@ -128,8 +166,16 @@ namespace PikaIRC {
                 _writeStream.Close();
                 _client.Close();
             }
-
-            _client = new TcpClient(_serverAddress, _serverPort);
+            //I WONT TELL ANYONE IF YOU WONT
+            RetryConnect:
+            //AHAHAHAHAHAHAAHAH
+            try {
+                _client = new TcpClient(_serverAddress, _serverPort);
+            }
+            catch (SocketException){
+                Thread.Sleep(5000);
+                goto RetryConnect;
+            }
             _client.ReceiveBufferSize = 65536;
 
             var stream = _client.GetStream();

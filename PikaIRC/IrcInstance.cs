@@ -30,6 +30,7 @@ namespace PikaIRC{
         readonly string _userPass;
         readonly Task _readerThread;
         readonly string _defaultChannel;
+        string _hostName;
 
 
         bool _disposed;
@@ -46,6 +47,7 @@ namespace PikaIRC{
 
             _closeReaderThread = false;
             _disposed = false;
+            _hostName = "";
 
             _readerThread = new Task(ReaderThread);
 
@@ -55,6 +57,7 @@ namespace PikaIRC{
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
             _components.Add(new PingResponder());
             _components.Add(new RejoinPostKick());
+            _components.Add(new ConnectionTester(Reconnect, SendCmd));
             if (components != null){
                 _components.AddRange(components);
             }
@@ -92,6 +95,7 @@ namespace PikaIRC{
                     break;
                 case IrcCommand.Ping:
                     cmd = "PING";
+                    destination = _hostName;
                     break;
                 default:
                     throw new Exception();
