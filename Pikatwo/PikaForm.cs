@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -20,6 +19,8 @@ namespace Pikatwo{
             openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             DisconnectBut.Enabled = false;
+
+
             LoadLastUsedServer();
         }
 
@@ -50,7 +51,7 @@ namespace Pikatwo{
             init.DefaultChannel = DefaultChannelTexbox.Text;
             init.UserPass = UserPasswordTexbox.Text;
 
-            _irc = new IrcInstance(init, OnLogMsg, new []{new Chatlogger()});
+            _irc = new IrcInstance(init, OnLogMsg, new[]{new Chatlogger()});
             _irc.Connect();
             ConnectBut.Enabled = false;
             DisconnectBut.Enabled = true;
@@ -177,5 +178,27 @@ namespace Pikatwo{
         }
 
         #endregion
+
+        void PikaFormResize(object sender, EventArgs e){
+            if (FormWindowState.Minimized == this.WindowState){
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(5);
+                this.Hide();
+            }
+            else if (FormWindowState.Normal == this.WindowState){
+                notifyIcon1.Visible = false;
+                //Application.OpenForms["PikaForm"].BringToFront();
+            }
+
+        }
+
+        private void NotifyIcon1Click(object sender, EventArgs e) {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon1.Visible = false;
+        }
+
+
+
     }
 }

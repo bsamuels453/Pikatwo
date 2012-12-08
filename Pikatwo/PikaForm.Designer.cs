@@ -27,6 +27,8 @@ namespace Pikatwo {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PikaForm));
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.DefaultChannelTexbox = new System.Windows.Forms.TextBox();
@@ -54,6 +56,7 @@ namespace Pikatwo {
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Options.SuspendLayout();
@@ -317,6 +320,15 @@ namespace Pikatwo {
             this.saveFileDialog1.Filter = "|*.irc";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialog1FileOk);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "Sent to tray";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.NotifyIcon1Click);
+            // 
             // PikaForm
             // 
             this.AutoSize = true;
@@ -331,6 +343,7 @@ namespace Pikatwo {
             this.Controls.Add(this.groupBox1);
             this.Name = "PikaForm";
             this.Text = "Pikatwo";
+            this.Resize += new System.EventHandler(this.PikaFormResize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -373,6 +386,7 @@ namespace Pikatwo {
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
         private RichTextBox LogTextbox;
+        private NotifyIcon notifyIcon1;
     }
 }
 
