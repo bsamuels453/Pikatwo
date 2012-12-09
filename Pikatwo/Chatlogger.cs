@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using IRCBackend;
-using PikaIRC;
 
 namespace Pikatwo {
     internal class Chatlogger : IrcComponent{

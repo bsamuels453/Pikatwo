@@ -1,6 +1,6 @@
 ﻿#region
 
-using PikaIRC;
+
 
 #endregion
 
@@ -31,7 +31,7 @@ namespace IRCBackend.Components{
             if (msg.Command == "353")
                 _onIrcOutput.Invoke("Channel Joined");
             if (msg.Command == "KICK")
-                _onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
+                //_onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
             if (msg.Prefix.Contains("NickServ")
                 && msg.Trailing.Contains("identified for"))
                 _onIrcOutput.Invoke("Nickserv authentication successful");

@@ -1,4 +1,4 @@
-﻿namespace PikaIRC{
+﻿namespace IRCBackend{
     public class IrcMsg{
         public string Command;
         public string CommandParams;

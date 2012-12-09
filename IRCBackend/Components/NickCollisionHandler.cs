@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using PikaIRC;
 
 #endregion
 
