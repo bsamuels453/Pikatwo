@@ -31,8 +31,8 @@ namespace IRCBackend{
 
         readonly string _defaultChannel;
 
-        readonly OnIrcInput _onIrcOutput;
-        readonly Task _readerThread;
+        readonly OnIrcInput _extLogWriter;
+        Task _readerThread;
 
         readonly string _serverAddress;
         readonly int _serverPort;
@@ -51,13 +51,11 @@ namespace IRCBackend{
             _userPass = initData.UserPass ?? "";
 
             _components = new List<IrcComponent>();
-            _clientCommandQueue = new List<InternalTask>();
 
-            _closeReaderThread = false;
             _disposed = false;
             _hostName = "";
 
-            _readerThread = new Task(ReaderThread);
+            _timeSinceLastPing = new Stopwatch();
 
             //setup builtin components
             _components.Add(new JoinDefaultChannel(_defaultChannel));
@@ -67,10 +65,10 @@ namespace IRCBackend{
             _components.Add(new NickCollisionHandler(_userNick, _userPass));
             _components.Add(new PingResponder());
             _components.Add(new RejoinPostKick());
-            _components.Add(new ConnectionTester(Reconnect, SendCmd));
+            //_components.Add(new ConnectionTester(Reconnect, SendCmd));
             if (loggingCallback != null){
-                _onIrcOutput = loggingCallback;
-                _components.Add(new Logger(_onIrcOutput));
+                _extLogWriter = loggingCallback;
+                _components.Add(new Logger(_extLogWriter));
             }
             if (components != null){
                 _components.AddRange(components);
@@ -82,9 +80,10 @@ namespace IRCBackend{
         public void Dispose(){
             if (!_disposed){
                 SendCmd(IrcCommand.Quit, "", null, true);
-                lock (_clientCommandQueue){
-                    _clientCommandQueue.Add(DisposeThreadedAssets);
-                }
+                _killReader = true;
+                _readerThread.Wait();
+                DisposeThreadedAssets();
+
                 _disposed = true;
             }
         }
@@ -94,15 +93,31 @@ namespace IRCBackend{
         //this is the only case in which a synchronous method can call
         //one of the methods for use by the synchronouse read loop
         public void Connect(){
-            _onIrcOutput.Invoke("Starting connection");
-            if (_readerThread.Status != TaskStatus.Running){
-                _clientCommandQueue.Clear();
+            _extLogWriter.Invoke("Starting connection");
+            if (_readerThread == null) {
+                InvokeConnect();
+                _readerThread = new Task(ReaderThread);
+                _readerThread.Start();
+            }
+            else{
+                if (_readerThread.Status != TaskStatus.Running){
+                    foreach (var component in _components){
+                        component.Reset();
+                    }
+                    InvokeConnect();
+                    _readerThread = new Task(ReaderThread);
+                    _readerThread.Start();
+                }
+                /*
+                if (_readerThread.Status != TaskStatus.Running){
                 foreach (var component in _components){
                     component.Reset();
                 }
 
-                InternalConnect();
+                InvokeConnect();
+                _readerThread = new Task(ReaderThread);
                 _readerThread.Start();
+                 */
             }
         }
 
@@ -128,6 +143,7 @@ namespace IRCBackend{
                     break;
                 case IrcCommand.Quit:
                     cmd = "QUIT";
+                    _killReader = true;
                     break;
                 default:
                     throw new Exception();
@@ -146,6 +162,10 @@ namespace IRCBackend{
                 if (flushNow){
                     _writeStream.Flush();
                 }
+            }
+            lock (_timeSinceLastPing){
+                _timeSinceLastPing.Reset();
+                _timeSinceLastPing.Start();
             }
         }
     }

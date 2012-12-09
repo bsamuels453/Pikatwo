@@ -1,6 +1,8 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -12,48 +14,90 @@ using PikaIRC;
 
 namespace IRCBackend{
     public partial class IrcInstance{
-        readonly List<InternalTask> _clientCommandQueue;
         readonly List<IrcComponent> _components;
+        readonly Stopwatch _timeSinceLastPing;
+        bool _killReader;
+        bool _exceptionOkay;
+
+        string ReadStrm(){
+            string input;
+            try {
+                input = _readStream.ReadLine();
+            }
+            catch (Exception){
+                if (!_killReader && !_exceptionOkay) {
+                    _exceptionOkay = false;
+                    _extLogWriter.Invoke("Exception in read stream");
+                }
+                input = null;
+            }
+            return input;
+        }
 
         void ReaderThread(){
-            string input = "";
             while (true){
-                try{
-                    input = _readStream.ReadLine();
-                }
-                catch (IOException e){
-                    Reconnect();
-                }
+                Task<string> readerTsk = new Task<string>(ReadStrm);
+                readerTsk.Start();
 
-                lock (_clientCommandQueue){
-                    for (int i = 0; i < _clientCommandQueue.Count; i++){
-                        _clientCommandQueue[i].Invoke();
+                string input = "";
+                #region input reading loop
+                while (true){
+                    if (readerTsk.IsCompleted){
+                        input = readerTsk.Result;
+                        break;
                     }
-                }
 
-                if (_closeReaderThread)
+                    lock (_timeSinceLastPing) {
+                        if (_timeSinceLastPing.ElapsedMilliseconds > 150000){//150 sec
+                            input = null;
+                            _extLogWriter.Invoke("Ping timeout: " + _timeSinceLastPing.ElapsedMilliseconds/1000 + " seconds");
+                            _exceptionOkay = true;
+                            break;
+                        }
+                    }
+                    if (_killReader)
+                        break;
+
+                    Thread.Sleep(100);
+                }
+                #endregion
+
+                if (_killReader)
                     break;
+
+                if (input == null){
+                    _extLogWriter.Invoke("Disconnected from server");
+                    Reconnect();
+                    continue;
+                }
 
                 var msg = ParseInput(input);
 
                 //ugly hack to get the hostname that we ended up getting connected to
-                lock (_hostName){
-                    if (_hostName == ""){
-                        _onIrcOutput.Invoke("Host name resolved");
-                        _hostName = msg.Prefix;
-                    }
+                if (_hostName == ""){
+                    _extLogWriter.Invoke("Host name resolved");
+                    _hostName = msg.Prefix;
                 }
 
                 foreach (var component in _components){
                     component.HandleMsg(msg, SendCmd);
                 }
+
+                if (msg.Command == "PING"){
+                    lock (_timeSinceLastPing) {
+                        _timeSinceLastPing.Reset();
+                        _timeSinceLastPing.Start();
+                    }
+                }
                 _writeStream.Flush();
+
+
             }
         }
 
         IrcMsg ParseInput(string input){
             string prefix = "";
-            string cmd = "";
+            string cmd;
             string cmdParams = "";
             string trailing = "";
             int cmdIndex;
@@ -110,7 +154,6 @@ namespace IRCBackend{
             retMsg.CommandParams = cmdParams;
             retMsg.Trailing = trailing;
 
-
             return retMsg;
         }
 
@@ -118,37 +161,24 @@ namespace IRCBackend{
             _client.Close();
             _readStream.Close();
             _writeStream.Close();
-            _closeReaderThread = true;
             foreach (var component in _components){
                 component.Dispose();
             }
-            lock (_hostName){
-                _hostName = "";
-            }
+            _hostName = "";
         }
 
         void Reconnect(){
-            lock (_clientCommandQueue){
-                _clientCommandQueue.Add(InternalReconnect);
-            }
-        }
-
-        void InternalReconnect(){
+            _extLogWriter.Invoke("Reconnecting to server");
             DisposeThreadedAssets();
-            _clientCommandQueue.Clear();
             foreach (var component in _components){
                 component.Reset();
             }
-            InternalConnect();
-            if (_readerThread.Status != TaskStatus.Running){
-                _readerThread.Start();
-            }
-            else{
-                _closeReaderThread = false;
-            }
+            InvokeConnect();
         }
 
-        void InternalConnect(){
+        //while this method isnt explicitly threaded, it's only invoked  by the reader thread or an 
+        //external thread only when the reader thread is dead, so there's no chance for collisions
+        void InvokeConnect(){
             if (_client != null){
                 _readStream.Close();
                 _writeStream.Close();
@@ -179,21 +209,17 @@ namespace IRCBackend{
                 string.Format("USER {0} {1} * :{2}\r\n", "pikacs", _serverAddress, "pikacs")
                 );
             _writeStream.Flush();
+            lock (_timeSinceLastPing) {
+                _timeSinceLastPing.Reset();
+                _timeSinceLastPing.Start();
+            }
+            _exceptionOkay = false;
         }
 
-        #region Nested type: InternalTask
-
-        delegate void InternalTask();
-
-        #endregion
-
         #region stuff that synchronous methods shouldnt touch except for ctor
-
         TcpClient _client;
-        bool _closeReaderThread;
         StreamReader _readStream;
         StreamWriter _writeStream;
-
         #endregion
     }
 }
