@@ -4,6 +4,8 @@
 
 #endregion
 
+using System.Linq;
+
 namespace IRCBackend.Components{
     internal class RejoinPostKick : IrcComponent{
         #region IrcComponent Members
@@ -18,7 +20,7 @@ namespace IRCBackend.Components{
             if (msg.Command == "KICK"){
                 sendMethod.Invoke(
                     IrcCommand.Join,
-                    msg.CommandParams
+                    msg.CommandParams[0]
                     );
             }
         }

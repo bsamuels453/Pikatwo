@@ -67,7 +67,7 @@ namespace IRCBackend{
             //_components.Add(new ConnectionTester(Reconnect, SendCmd));
             if (loggingCallback != null){
                 _extLogWriter = loggingCallback;
-                _components.Add(new Logger(_extLogWriter));
+                _components.Add(new Logger(_extLogWriter, _userNick));
             }
             if (components != null){
                 _components.AddRange(components);

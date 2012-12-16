@@ -7,9 +7,11 @@
 namespace IRCBackend.Components{
     internal class Logger : IrcComponent{
         readonly IrcInstance.OnIrcInput _onIrcOutput;
-
-        public Logger(IrcInstance.OnIrcInput onOutput){
+        readonly string _userNick;
+        
+        public Logger(IrcInstance.OnIrcInput onOutput, string userNick){
             _onIrcOutput = onOutput;
+            _userNick = userNick;
         }
 
         #region IrcComponent Members
@@ -28,10 +30,10 @@ namespace IRCBackend.Components{
                 _onIrcOutput.Invoke("Nick in use, attempting ghost");
             if (msg.Command == "376")
                 _onIrcOutput.Invoke("Connection Successful");
-            if (msg.Command == "353")
+            if (msg.Command == "366")
                 _onIrcOutput.Invoke("Channel Joined");
-            if (msg.Command == "KICK")
-                //_onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
+            if (msg.Command == "KICK" && msg.CommandParams[1] == _userNick)
+                _onIrcOutput.Invoke("Kicked from channel, attempting to rejoin");
             if (msg.Prefix.Contains("NickServ")
                 && msg.Trailing.Contains("identified for"))
                 _onIrcOutput.Invoke("Nickserv authentication successful");

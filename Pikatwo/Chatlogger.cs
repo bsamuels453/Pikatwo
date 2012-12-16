@@ -26,16 +26,17 @@ namespace Pikatwo {
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
-            if (msg.Command == "PRIVMSG" && msg.CommandParams.Contains("#")){
-
-                _writer.WriteLine(
-                    string.Format("{0} {1} {2}",
-                                  (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds,
-                                  msg.Prefix,
-                                  msg.Trailing
-                        )
-                    );
-                _writer.Flush();
+            if(msg.CommandParams.Any()){
+                if (msg.Command == "PRIVMSG" && msg.CommandParams[0].Contains("#")){//thisll narrow input down to channel messages
+                    _writer.WriteLine(
+                        string.Format("{0} {1} {2}",
+                                      (int) (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds,
+                                      msg.Prefix,
+                                      msg.Trailing
+                            )
+                        );
+                    _writer.Flush();
+                }
             }
         }
     }
