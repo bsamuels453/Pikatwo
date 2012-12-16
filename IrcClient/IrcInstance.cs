@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using IRCBackend.Components;
+using IrcClient.Components;
 
 #endregion
 
-namespace IRCBackend{
+namespace IrcClient{
     public enum IrcCommand{
         Message,
         Join,
@@ -19,7 +19,7 @@ namespace IRCBackend{
         //Disconnect
     }
 
-    public partial class IrcInstance : IDisposable{
+    public partial class IrcInstance {
         #region Delegates
 
         public delegate void OnIrcInput(string msg);
@@ -74,9 +74,7 @@ namespace IRCBackend{
             }
         }
 
-        #region IDisposable Members
-
-        public void Dispose(){
+        public void Close(){
             if (!_disposed){
                 SendCmd(IrcCommand.Quit, "", null, true);
                 _killReader = true;
@@ -86,8 +84,6 @@ namespace IRCBackend{
                 _disposed = true;
             }
         }
-
-        #endregion
 
         //this is the only case in which a synchronous method can call
         //one of the methods for use by the synchronouse read loop

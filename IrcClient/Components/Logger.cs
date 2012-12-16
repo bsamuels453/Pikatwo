@@ -4,7 +4,7 @@
 
 #endregion
 
-namespace IRCBackend.Components{
+namespace IrcClient.Components{
     internal class Logger : IrcComponent{
         readonly IrcInstance.OnIrcInput _onIrcOutput;
         readonly string _userNick;

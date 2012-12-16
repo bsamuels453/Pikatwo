@@ -4,7 +4,7 @@
 
 #endregion
 
-namespace IRCBackend.Components{
+namespace IrcClient.Components{
     internal class NickIdentifier : IrcComponent{
         readonly string _nick;
         readonly string _password;

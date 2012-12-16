@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace IRCBackend{
+namespace IrcClient{
 // ReSharper disable InconsistentNaming
     public interface IrcComponent : IDisposable{
 // ReSharper restore InconsistentNaming

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 #endregion
 
-namespace IRCBackend{
+namespace IrcClient{
     public partial class IrcInstance{
         readonly List<IrcComponent> _components;
         readonly Stopwatch _timeSinceLastPing;

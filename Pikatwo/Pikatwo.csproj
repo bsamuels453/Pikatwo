@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawLogger.cs" />
     <EmbeddedResource Include="PikaForm.resx">
       <DependentUpon>PikaForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -84,9 +85,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IRCBackend\IRCBackend.csproj">
+    <ProjectReference Include="..\IrcClient\IrcClient.csproj">
       <Project>{CFF81E68-8567-4479-B0C5-BA4193FE8011}</Project>
-      <Name>IRCBackend</Name>
+      <Name>IrcClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

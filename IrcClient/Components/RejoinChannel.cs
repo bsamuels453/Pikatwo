@@ -4,14 +4,10 @@
 
 #endregion
 
-namespace IRCBackend.Components{
-    internal class JoinDefaultChannel : IrcComponent{
-        readonly string _channelToJoin;
+using System.Linq;
 
-        public JoinDefaultChannel(string channelName){
-            _channelToJoin = channelName;
-        }
-
+namespace IrcClient.Components{
+    internal class RejoinPostKick : IrcComponent{
         #region IrcComponent Members
 
         public void Dispose(){
@@ -21,10 +17,10 @@ namespace IRCBackend.Components{
         }
 
         public void HandleMsg(IrcMsg msg, IrcInstance.SendIrcCmd sendMethod){
-            if (msg.Command == "376"){ //end of motd
+            if (msg.Command == "KICK"){
                 sendMethod.Invoke(
                     IrcCommand.Join,
-                    _channelToJoin
+                    msg.CommandParams[0]
                     );
             }
         }

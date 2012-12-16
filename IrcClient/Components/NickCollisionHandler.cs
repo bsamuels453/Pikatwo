@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace IRCBackend.Components{
+namespace IrcClient.Components{
     internal class NickCollisionHandler : IrcComponent{
         readonly string _nick;
         readonly string _password;

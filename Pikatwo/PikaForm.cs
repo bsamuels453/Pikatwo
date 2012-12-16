@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using IRCBackend;
+using IrcClient;
 using Newtonsoft.Json;
 
 #endregion
@@ -51,7 +51,7 @@ namespace Pikatwo{
             init.DefaultChannel = DefaultChannelTexbox.Text;
             init.UserPass = UserPasswordTexbox.Text;
 
-            _irc = new IrcInstance(init, OnLogMsg, new[]{new Chatlogger()});
+            _irc = new IrcInstance(init, OnLogMsg, new IrcComponent[]{new Chatlogger(), new RawLogger()});
             _irc.Connect();
             ConnectBut.Enabled = false;
             DisconnectBut.Enabled = true;

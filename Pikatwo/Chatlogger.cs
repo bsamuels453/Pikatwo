@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using IRCBackend;
+using IrcClient;
 
 namespace Pikatwo {
     internal class Chatlogger : IrcComponent{

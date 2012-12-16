@@ -1,4 +1,4 @@
-﻿namespace IRCBackend{
+﻿namespace IrcClient{
     public class IrcMsg{
         public string Command;
         public string[] CommandParams;
