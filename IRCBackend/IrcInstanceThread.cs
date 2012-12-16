@@ -97,7 +97,7 @@ namespace IRCBackend{
         IrcMsg ParseInput(string input){
             string prefix = "";
             string cmd;
-            string cmdParams = "";
+            List<string> cmdParams = new List<string>();
             string trailing = "";
             int cmdIndex;
 
@@ -119,7 +119,7 @@ namespace IRCBackend{
                 cmdIndex++;
                 int trailingStartPos = -1;
                 for (int i = cmdIndex; i < inputArgs.Count(); i++){
-                    if (inputArgs[i][0] == ':'){
+                    if (inputArgs[i][0] == ':'){//this denotes the beginning of trailing
                         trailing = "";
 
                         //concat the args into a string
@@ -133,26 +133,35 @@ namespace IRCBackend{
                         break;
                     }
                 }
-                if (trailingStartPos > cmdIndex){
+                if (trailingStartPos > cmdIndex){//now grab everything between the command and the trailing
                     for (int i = cmdIndex; i < trailingStartPos; i++){
-                        if (!inputArgs[i].Contains(_userNick)){
-                            cmdParams += inputArgs[i] + " ";
-                        }
+                        //if (!inputArgs[i].Contains(_userNick)){
+                            cmdParams.Add(inputArgs[i] + " ");
+                        //}
                     }
                     //clip trailing whitespace
                     if (cmdParams.Any()){
-                        if (cmdParams.Last() == ' ')
-                            cmdParams = cmdParams.Remove(cmdParams.Count() - 1);
+                        if (cmdParams.Last().Last() == ' ')
+                            cmdParams[cmdParams.Count - 1] =
+                                cmdParams.Last().Remove(
+                                    cmdParams.Last().Count() - 1
+                                    );
                     }
                 }
             }
 
+            //this saves us from loads of error checking later
+            while (cmdParams.Count < 5)
+                cmdParams.Add("");
+
             var retMsg = new IrcMsg();
             retMsg.Prefix = prefix;
             retMsg.Command = cmd;
-            retMsg.CommandParams = cmdParams;
+            retMsg.CommandParams = cmdParams.ToArray();
             retMsg.Trailing = trailing;
-
+            if (retMsg.Command == "KICK"){
+                int f = 3;
+            }
             return retMsg;
         }
 
