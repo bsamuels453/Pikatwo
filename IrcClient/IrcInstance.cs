@@ -15,6 +15,7 @@ namespace IrcClient{
         ChangeNick,
         Ping,
         Pong,
+        Part,
         Quit
         //Disconnect
     }
@@ -24,7 +25,7 @@ namespace IrcClient{
 
         public delegate void OnIrcInput(string msg);
 
-        public delegate void SendIrcCmd(IrcCommand command, string destination, string param = null, bool flushNow = false);
+        public delegate void SendIrcCmd(IrcCommand command, string destination, string param = null, bool doLog=false);
 
         #endregion
 
@@ -57,6 +58,10 @@ namespace IrcClient{
             _timeSinceLastPing = new Stopwatch();
 
             //setup builtin components
+            if (loggingCallback != null) {
+                _extLogWriter = loggingCallback;
+                _components.Add(new Logger(_extLogWriter, _userNick));
+            }
             _components.Add(new JoinDefaultChannel(_defaultChannel));
             if (_userPass != ""){
                 _components.Add(new NickIdentifier(_userNick, _userPass));
@@ -65,10 +70,7 @@ namespace IrcClient{
             _components.Add(new PingResponder());
             _components.Add(new RejoinPostKick());
             //_components.Add(new ConnectionTester(Reconnect, SendCmd));
-            if (loggingCallback != null){
-                _extLogWriter = loggingCallback;
-                _components.Add(new Logger(_extLogWriter, _userNick));
-            }
+
             if (components != null){
                 _components.AddRange(components);
             }
@@ -76,19 +78,21 @@ namespace IrcClient{
 
         public void Close(){
             if (!_disposed){
-                SendCmd(IrcCommand.Quit, "", null, true);
+                SendCmd(IrcCommand.Quit, "", null,  doLog:true);
                 _killReader = true;
                 _readerThread.Wait();
                 DisposeThreadedAssets();
-
                 _disposed = true;
+
+                _extLogWriter.Invoke("Disconnected from server");
+                _extLogWriter.Invoke("------------------------");
             }
         }
 
         //this is the only case in which a synchronous method can call
         //one of the methods for use by the synchronouse read loop
         public void Connect(){
-            _extLogWriter.Invoke("Starting connection");
+            _extLogWriter.Invoke("-Starting connection");
             if (_readerThread == null) {
                 InvokeConnect();
                 _readerThread = new Task(ReaderThread);
@@ -116,7 +120,7 @@ namespace IrcClient{
             }
         }
 
-        public void SendCmd(IrcCommand command, string destination, string param = null, bool flushNow = false){
+        public void SendCmd(IrcCommand command, string destination, string param = null,  bool doLog = false){
             Debug.Assert(_writeStream != null);
             string cmd;
             switch (command){
@@ -140,9 +144,17 @@ namespace IrcClient{
                     cmd = "QUIT";
                     _killReader = true;
                     break;
+                case IrcCommand.Part:
+                    cmd = "PART";
+                    destination = _defaultChannel;
+                    break;
                 default:
                     throw new Exception();
             }
+            if (doLog){
+                _extLogWriter.Invoke(">" + cmd + " " + destination + " " + param);
+            }
+
             lock (_writeStream){
                 if (param != null)
                     _writeStream.WriteLine(
@@ -154,9 +166,7 @@ namespace IrcClient{
                         string.Format("{0} {1}\r\n", cmd, destination)
                         );
 
-                if (flushNow){
-                    _writeStream.Flush();
-                }
+                _writeStream.Flush();
             }
             lock (_timeSinceLastPing){
                 _timeSinceLastPing.Reset();

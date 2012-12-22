@@ -20,7 +20,8 @@ namespace IrcClient.Components{
             if (msg.Command == "KICK"){
                 sendMethod.Invoke(
                     IrcCommand.Join,
-                    msg.CommandParams[0]
+                    msg.CommandParams[0],
+                    doLog: true
                     );
             }
         }

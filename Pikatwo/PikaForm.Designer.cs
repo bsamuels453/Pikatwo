@@ -30,7 +30,7 @@ namespace Pikatwo {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PikaForm));
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ConnectionCredentials = new System.Windows.Forms.GroupBox();
             this.DefaultChannelTexbox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.UserPasswordTexbox = new System.Windows.Forms.TextBox();
@@ -50,8 +50,22 @@ namespace Pikatwo {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.groupBox1.SuspendLayout();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.BotControlContainer = new System.Windows.Forms.GroupBox();
+            this.JoinChannelBut = new System.Windows.Forms.Button();
+            this.PartChannelBut = new System.Windows.Forms.Button();
+            this.PingBut = new System.Windows.Forms.Button();
+            this.SendMsgContainer = new System.Windows.Forms.GroupBox();
+            this.SendMsgButton = new System.Windows.Forms.Button();
+            this.SendMsgCombobox = new System.Windows.Forms.ComboBox();
+            this.SendMsgTextbox = new System.Windows.Forms.TextBox();
+            this.ConnectionCredentials.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.BotControlContainer.SuspendLayout();
+            this.SendMsgContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripStatusLabel1
@@ -60,26 +74,26 @@ namespace Pikatwo {
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // groupBox1
+            // ConnectionCredentials
             // 
-            this.groupBox1.Controls.Add(this.DefaultChannelTexbox);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.UserPasswordTexbox);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.UserNickTextbox);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.LoadBut);
-            this.groupBox1.Controls.Add(this.SaveBut);
-            this.groupBox1.Controls.Add(this.ServerPortTexBox);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.ServerAddressTexbox);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 8);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(330, 108);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Connection Credentials";
+            this.ConnectionCredentials.Controls.Add(this.DefaultChannelTexbox);
+            this.ConnectionCredentials.Controls.Add(this.label5);
+            this.ConnectionCredentials.Controls.Add(this.UserPasswordTexbox);
+            this.ConnectionCredentials.Controls.Add(this.label4);
+            this.ConnectionCredentials.Controls.Add(this.UserNickTextbox);
+            this.ConnectionCredentials.Controls.Add(this.label3);
+            this.ConnectionCredentials.Controls.Add(this.LoadBut);
+            this.ConnectionCredentials.Controls.Add(this.SaveBut);
+            this.ConnectionCredentials.Controls.Add(this.ServerPortTexBox);
+            this.ConnectionCredentials.Controls.Add(this.label2);
+            this.ConnectionCredentials.Controls.Add(this.ServerAddressTexbox);
+            this.ConnectionCredentials.Controls.Add(this.label1);
+            this.ConnectionCredentials.Location = new System.Drawing.Point(12, 8);
+            this.ConnectionCredentials.Name = "ConnectionCredentials";
+            this.ConnectionCredentials.Size = new System.Drawing.Size(330, 108);
+            this.ConnectionCredentials.TabIndex = 13;
+            this.ConnectionCredentials.TabStop = false;
+            this.ConnectionCredentials.Text = "Connection Credentials";
             // 
             // DefaultChannelTexbox
             // 
@@ -186,7 +200,7 @@ namespace Pikatwo {
             // 
             // ConnectBut
             // 
-            this.ConnectBut.Location = new System.Drawing.Point(12, 122);
+            this.ConnectBut.Location = new System.Drawing.Point(9, 19);
             this.ConnectBut.Name = "ConnectBut";
             this.ConnectBut.Size = new System.Drawing.Size(58, 22);
             this.ConnectBut.TabIndex = 14;
@@ -196,7 +210,7 @@ namespace Pikatwo {
             // 
             // DisconnectBut
             // 
-            this.DisconnectBut.Location = new System.Drawing.Point(76, 121);
+            this.DisconnectBut.Location = new System.Drawing.Point(73, 18);
             this.DisconnectBut.Name = "DisconnectBut";
             this.DisconnectBut.Size = new System.Drawing.Size(75, 23);
             this.DisconnectBut.TabIndex = 15;
@@ -207,9 +221,9 @@ namespace Pikatwo {
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.LogTextbox);
-            this.groupBox2.Location = new System.Drawing.Point(12, 150);
+            this.groupBox2.Location = new System.Drawing.Point(348, 122);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(330, 346);
+            this.groupBox2.Size = new System.Drawing.Size(409, 346);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Log";
@@ -221,9 +235,10 @@ namespace Pikatwo {
             this.LogTextbox.Location = new System.Drawing.Point(3, 16);
             this.LogTextbox.Name = "LogTextbox";
             this.LogTextbox.ReadOnly = true;
-            this.LogTextbox.Size = new System.Drawing.Size(324, 327);
+            this.LogTextbox.Size = new System.Drawing.Size(403, 327);
             this.LogTextbox.TabIndex = 0;
             this.LogTextbox.Text = "";
+            this.LogTextbox.WordWrap = false;
             this.LogTextbox.TextChanged += new System.EventHandler(this.LogBoxTextChanged);
             // 
             // openFileDialog1
@@ -248,21 +263,141 @@ namespace Pikatwo {
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.NotifyIcon1Click);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Location = new System.Drawing.Point(348, 8);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(409, 108);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Connection Info";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 33);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(100, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Connection Uptime:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Uptime:";
+            // 
+            // BotControlContainer
+            // 
+            this.BotControlContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.BotControlContainer.Controls.Add(this.JoinChannelBut);
+            this.BotControlContainer.Controls.Add(this.PartChannelBut);
+            this.BotControlContainer.Controls.Add(this.PingBut);
+            this.BotControlContainer.Controls.Add(this.SendMsgContainer);
+            this.BotControlContainer.Controls.Add(this.ConnectBut);
+            this.BotControlContainer.Controls.Add(this.DisconnectBut);
+            this.BotControlContainer.Location = new System.Drawing.Point(12, 122);
+            this.BotControlContainer.Name = "BotControlContainer";
+            this.BotControlContainer.Size = new System.Drawing.Size(330, 343);
+            this.BotControlContainer.TabIndex = 18;
+            this.BotControlContainer.TabStop = false;
+            this.BotControlContainer.Text = "Bot Control";
+            // 
+            // JoinChannelBut
+            // 
+            this.JoinChannelBut.Location = new System.Drawing.Point(148, 47);
+            this.JoinChannelBut.Name = "JoinChannelBut";
+            this.JoinChannelBut.Size = new System.Drawing.Size(81, 23);
+            this.JoinChannelBut.TabIndex = 19;
+            this.JoinChannelBut.Text = "Join Channel";
+            this.JoinChannelBut.UseVisualStyleBackColor = true;
+            this.JoinChannelBut.Click += new System.EventHandler(this.JoinChannelButClick);
+            // 
+            // PartChannelBut
+            // 
+            this.PartChannelBut.Location = new System.Drawing.Point(62, 47);
+            this.PartChannelBut.Name = "PartChannelBut";
+            this.PartChannelBut.Size = new System.Drawing.Size(80, 23);
+            this.PartChannelBut.TabIndex = 18;
+            this.PartChannelBut.Text = "Part Channel";
+            this.PartChannelBut.UseVisualStyleBackColor = true;
+            this.PartChannelBut.Click += new System.EventHandler(this.PartChannelButClick);
+            // 
+            // PingBut
+            // 
+            this.PingBut.Location = new System.Drawing.Point(12, 47);
+            this.PingBut.Name = "PingBut";
+            this.PingBut.Size = new System.Drawing.Size(44, 23);
+            this.PingBut.TabIndex = 17;
+            this.PingBut.Text = "Ping";
+            this.PingBut.UseVisualStyleBackColor = true;
+            this.PingBut.Click += new System.EventHandler(this.PingButClick);
+            // 
+            // SendMsgContainer
+            // 
+            this.SendMsgContainer.Controls.Add(this.SendMsgButton);
+            this.SendMsgContainer.Controls.Add(this.SendMsgCombobox);
+            this.SendMsgContainer.Controls.Add(this.SendMsgTextbox);
+            this.SendMsgContainer.Location = new System.Drawing.Point(6, 288);
+            this.SendMsgContainer.Name = "SendMsgContainer";
+            this.SendMsgContainer.Size = new System.Drawing.Size(315, 49);
+            this.SendMsgContainer.TabIndex = 16;
+            this.SendMsgContainer.TabStop = false;
+            this.SendMsgContainer.Text = "Send Msg";
+            // 
+            // SendMsgButton
+            // 
+            this.SendMsgButton.Location = new System.Drawing.Point(265, 20);
+            this.SendMsgButton.Name = "SendMsgButton";
+            this.SendMsgButton.Size = new System.Drawing.Size(44, 20);
+            this.SendMsgButton.TabIndex = 2;
+            this.SendMsgButton.Text = "Send";
+            this.SendMsgButton.UseVisualStyleBackColor = true;
+            this.SendMsgButton.Click += new System.EventHandler(this.SendMsgButtonClick);
+            // 
+            // SendMsgCombobox
+            // 
+            this.SendMsgCombobox.FormattingEnabled = true;
+            this.SendMsgCombobox.Items.AddRange(new object[] {
+            "Nickserv",
+            "Channel"});
+            this.SendMsgCombobox.Location = new System.Drawing.Point(6, 19);
+            this.SendMsgCombobox.Name = "SendMsgCombobox";
+            this.SendMsgCombobox.Size = new System.Drawing.Size(91, 21);
+            this.SendMsgCombobox.TabIndex = 1;
+            // 
+            // SendMsgTextbox
+            // 
+            this.SendMsgTextbox.Location = new System.Drawing.Point(103, 20);
+            this.SendMsgTextbox.Name = "SendMsgTextbox";
+            this.SendMsgTextbox.Size = new System.Drawing.Size(156, 20);
+            this.SendMsgTextbox.TabIndex = 0;
+            // 
             // PikaForm
             // 
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(971, 523);
+            this.Controls.Add(this.BotControlContainer);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.DisconnectBut);
-            this.Controls.Add(this.ConnectBut);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.ConnectionCredentials);
             this.Name = "PikaForm";
             this.Text = "Pikatwo";
             this.Resize += new System.EventHandler(this.PikaFormResize);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.ConnectionCredentials.ResumeLayout(false);
+            this.ConnectionCredentials.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.BotControlContainer.ResumeLayout(false);
+            this.SendMsgContainer.ResumeLayout(false);
+            this.SendMsgContainer.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -271,7 +406,7 @@ namespace Pikatwo {
 
 
         private ToolStripStatusLabel toolStripStatusLabel1;
-        private GroupBox groupBox1;
+        private GroupBox ConnectionCredentials;
         private TextBox DefaultChannelTexbox;
         private Label label5;
         private TextBox UserPasswordTexbox;
@@ -291,6 +426,17 @@ namespace Pikatwo {
         private SaveFileDialog saveFileDialog1;
         private RichTextBox LogTextbox;
         private NotifyIcon notifyIcon1;
+        private GroupBox groupBox3;
+        private Label label6;
+        private GroupBox BotControlContainer;
+        private GroupBox SendMsgContainer;
+        private TextBox SendMsgTextbox;
+        private Button SendMsgButton;
+        private ComboBox SendMsgCombobox;
+        private Label label7;
+        private Button JoinChannelBut;
+        private Button PartChannelBut;
+        private Button PingBut;
     }
 }
 

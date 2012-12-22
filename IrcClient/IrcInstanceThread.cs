@@ -74,7 +74,7 @@ namespace IrcClient{
 
                 //ugly hack to get the hostname that we ended up getting connected to
                 if (_hostName == ""){
-                    _extLogWriter.Invoke("Host name resolved");
+                    _extLogWriter.Invoke("-Host name resolved");
                     _hostName = msg.Prefix;
                 }
 
@@ -159,9 +159,6 @@ namespace IrcClient{
             retMsg.Command = cmd;
             retMsg.CommandParams = cmdParams.ToArray();
             retMsg.Trailing = trailing;
-            if (retMsg.Command == "KICK"){
-                int f = 3;
-            }
             return retMsg;
         }
 

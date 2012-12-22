@@ -27,7 +27,8 @@ namespace IrcClient.Components{
                 sendMethod.Invoke(
                     IrcCommand.Message,
                     "Nickserv",
-                    string.Format("IDENTIFY {0} {1}", _nick, _password)
+                    string.Format("IDENTIFY {0} {1}", _nick, _password),
+                    doLog: false
                     );
             }
         }

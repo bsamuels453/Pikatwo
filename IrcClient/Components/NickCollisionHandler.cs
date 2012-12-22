@@ -28,7 +28,8 @@ namespace IrcClient.Components{
                 //change the nick
                 sendMethod.Invoke(
                     IrcCommand.ChangeNick,
-                    _nick + DateTime.Now.Millisecond
+                    _nick + DateTime.Now.Millisecond,
+                    doLog: true
                     );
 
                 //ghost them if possible
@@ -45,7 +46,8 @@ namespace IrcClient.Components{
                 && msg.Trailing.Contains("has been ghosted.")){
                 sendMethod.Invoke(
                     IrcCommand.ChangeNick,
-                    _nick
+                    _nick,
+                    doLog:true
                     );
             }
         }

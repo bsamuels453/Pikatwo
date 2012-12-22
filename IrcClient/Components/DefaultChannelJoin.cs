@@ -24,7 +24,8 @@ namespace IrcClient.Components{
             if (msg.Command == "376"){ //end of motd
                 sendMethod.Invoke(
                     IrcCommand.Join,
-                    _channelToJoin
+                    _channelToJoin,
+                    doLog: true
                     );
             }
         }

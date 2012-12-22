@@ -19,12 +19,13 @@ namespace Pikatwo{
             openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory() + @"\data\";
             DisconnectBut.Enabled = false;
-
+            SendMsgCombobox.Text = "Channel";
 
             LoadLastUsedServer();
+            DisableBotControls();
         }
 
-        #region input
+        #region form input handling
 
         void SaveButClick(object sender, EventArgs e){
             saveFileDialog1.ShowDialog();
@@ -35,12 +36,9 @@ namespace Pikatwo{
         }
 
         void DisconnectButClick(object sender, EventArgs e){
-            OnLogMsgInv("Disconnected from server");
-            OnLogMsgInv("------------------------");
-            _irc.Dispose();
+            _irc.Close();
             _irc = null;
-            DisconnectBut.Enabled = false;
-            ConnectBut.Enabled = true;
+            DisableBotControls();
         }
 
         void ConnectButClick(object sender, EventArgs e){
@@ -53,8 +51,7 @@ namespace Pikatwo{
 
             _irc = new IrcInstance(init, OnLogMsg, new IrcComponent[]{new Chatlogger(), new RawLogger()});
             _irc.Connect();
-            ConnectBut.Enabled = false;
-            DisconnectBut.Enabled = true;
+            EnableBotControls();
         }
 
         void LogBoxTextChanged(object sender, EventArgs e){
@@ -84,7 +81,70 @@ namespace Pikatwo{
             SaveLastUsedServer(openFileDialog1.FileName);
         }
 
+        private void PingButClick(object sender, EventArgs e) {
+            _irc.SendCmd(IrcCommand.Ping, "", doLog: true);
+        }
+
+        private void PartChannelButClick(object sender, EventArgs e) {
+            _irc.SendCmd(IrcCommand.Part, DefaultChannelTexbox.Text, doLog: true);
+        }
+
+        private void JoinChannelButClick(object sender, EventArgs e) {
+            _irc.SendCmd(IrcCommand.Join, DefaultChannelTexbox.Text, doLog: true);
+        }
+
+        void PikaFormResize(object sender, EventArgs e){
+            if (FormWindowState.Minimized == this.WindowState){
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(5);
+                this.Hide();
+            }
+            else if (FormWindowState.Normal == this.WindowState){
+                notifyIcon1.Visible = false;
+                //Application.OpenForms["PikaForm"].BringToFront();
+            }
+        }
+
+        private void NotifyIcon1Click(object sender, EventArgs e) {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon1.Visible = false;
+        }
+
+        private void SendMsgButtonClick(object sender, EventArgs e) {
+            var target = SendMsgCombobox.Text;
+            var text = SendMsgTextbox.Text;
+            if (target == "" || text == "")
+                return;
+
+            if (target == "Channel")
+                target = DefaultChannelTexbox.Text;
+
+            _irc.SendCmd(IrcCommand.Message, target, text, doLog: true);
+            SendMsgTextbox.Text = "";
+        }
+
         #endregion
+
+        void EnableBotControls(){
+            ConnectBut.Enabled = false;
+            DisconnectBut.Enabled = true;
+            PingBut.Enabled = true;
+            PartChannelBut.Enabled = true;
+            JoinChannelBut.Enabled = true;
+            SendMsgContainer.Enabled = true;
+            ConnectionCredentials.Enabled = false;
+        }
+
+        void DisableBotControls(){
+            ConnectBut.Enabled = true;
+            DisconnectBut.Enabled = false;
+            PingBut.Enabled = false;
+            PartChannelBut.Enabled = false;
+            JoinChannelBut.Enabled = false;
+            SendMsgContainer.Enabled = false;
+            ConnectionCredentials.Enabled = true;
+        }
 
         #region loading/unloading
 
@@ -178,27 +238,6 @@ namespace Pikatwo{
         }
 
         #endregion
-
-        void PikaFormResize(object sender, EventArgs e){
-            if (FormWindowState.Minimized == this.WindowState){
-                notifyIcon1.Visible = true;
-                notifyIcon1.ShowBalloonTip(5);
-                this.Hide();
-            }
-            else if (FormWindowState.Normal == this.WindowState){
-                notifyIcon1.Visible = false;
-                //Application.OpenForms["PikaForm"].BringToFront();
-            }
-
-        }
-
-        private void NotifyIcon1Click(object sender, EventArgs e) {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-            notifyIcon1.Visible = false;
-        }
-
-
 
     }
 }
