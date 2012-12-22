@@ -47,20 +47,11 @@ namespace Pikatwo {
             this.DisconnectBut = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.LogTextbox = new System.Windows.Forms.RichTextBox();
-            this.Options = new System.Windows.Forms.GroupBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.Options.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripStatusLabel1
@@ -88,7 +79,7 @@ namespace Pikatwo {
             this.groupBox1.Size = new System.Drawing.Size(330, 108);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Credentials";
+            this.groupBox1.Text = "Connection Credentials";
             // 
             // DefaultChannelTexbox
             // 
@@ -216,9 +207,9 @@ namespace Pikatwo {
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.LogTextbox);
-            this.groupBox2.Location = new System.Drawing.Point(348, 8);
+            this.groupBox2.Location = new System.Drawing.Point(12, 150);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(317, 136);
+            this.groupBox2.Size = new System.Drawing.Size(330, 346);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Log";
@@ -230,82 +221,10 @@ namespace Pikatwo {
             this.LogTextbox.Location = new System.Drawing.Point(3, 16);
             this.LogTextbox.Name = "LogTextbox";
             this.LogTextbox.ReadOnly = true;
-            this.LogTextbox.Size = new System.Drawing.Size(311, 117);
+            this.LogTextbox.Size = new System.Drawing.Size(324, 327);
             this.LogTextbox.TabIndex = 0;
             this.LogTextbox.Text = "";
             this.LogTextbox.TextChanged += new System.EventHandler(this.LogBoxTextChanged);
-            // 
-            // Options
-            // 
-            this.Options.Controls.Add(this.checkBox3);
-            this.Options.Controls.Add(this.checkBox2);
-            this.Options.Controls.Add(this.checkBox1);
-            this.Options.Location = new System.Drawing.Point(495, 150);
-            this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(170, 265);
-            this.Options.TabIndex = 17;
-            this.Options.TabStop = false;
-            this.Options.Text = "Options";
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Enabled = false;
-            this.checkBox3.Location = new System.Drawing.Point(6, 65);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(119, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Replying To People";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(6, 42);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(159, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Replying To Aux Commands";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(6, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(64, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Logging";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Location = new System.Drawing.Point(12, 150);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(477, 265);
-            this.groupBox3.TabIndex = 18;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Fun Stuff";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 426);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(680, 22);
-            this.statusStrip1.TabIndex = 19;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
             // 
             // openFileDialog1
             // 
@@ -333,10 +252,7 @@ namespace Pikatwo {
             // 
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(680, 448);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.Options);
+            this.ClientSize = new System.Drawing.Size(971, 523);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.DisconnectBut);
             this.Controls.Add(this.ConnectBut);
@@ -347,12 +263,7 @@ namespace Pikatwo {
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.Options.ResumeLayout(false);
-            this.Options.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -376,13 +287,6 @@ namespace Pikatwo {
         private Button ConnectBut;
         private Button DisconnectBut;
         private GroupBox groupBox2;
-        private GroupBox Options;
-        private CheckBox checkBox3;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
-        private GroupBox groupBox3;
-        private StatusStrip statusStrip1;
-        private ToolStripStatusLabel toolStripStatusLabel2;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
         private RichTextBox LogTextbox;
