@@ -20,11 +20,11 @@ namespace IrcClient{
 
         string ReadStrm(){
             string input;
-            try {
+            try{
                 input = _readStream.ReadLine();
             }
             catch (Exception){
-                if (!_killReader && !_exceptionOkay) {
+                if (!_killReader && !_exceptionOkay){
                     _exceptionOkay = false;
                     _extLogWriter.Invoke("Exception in read stream");
                 }
@@ -39,15 +39,17 @@ namespace IrcClient{
                 readerTsk.Start();
 
                 string input = "";
+
                 #region input reading loop
+
                 while (true){
                     if (readerTsk.IsCompleted){
                         input = readerTsk.Result;
                         break;
                     }
 
-                    lock (_timeSinceLastPing) {
-                        if (_timeSinceLastPing.ElapsedMilliseconds > 150000){//150 sec
+                    lock (_timeSinceLastPing){
+                        if (_timeSinceLastPing.ElapsedMilliseconds > 150000){ //150 sec
                             input = null;
                             _extLogWriter.Invoke("Ping timeout: " + _timeSinceLastPing.ElapsedMilliseconds/1000 + " seconds");
                             _exceptionOkay = true;
@@ -59,6 +61,7 @@ namespace IrcClient{
 
                     Thread.Sleep(100);
                 }
+
                 #endregion
 
                 if (_killReader)
@@ -83,7 +86,7 @@ namespace IrcClient{
                 }
 
                 if (msg.Command == "PING"){
-                    lock (_timeSinceLastPing) {
+                    lock (_timeSinceLastPing){
                         _timeSinceLastPing.Reset();
                         _timeSinceLastPing.Start();
                     }
@@ -113,30 +116,47 @@ namespace IrcClient{
                 cmd = inputArgs[0];
                 cmdIndex = 0;
             }
-
+            
             //genreate commandparams and trailing
             if (inputArgs.Count() > cmdIndex + 1){
                 cmdIndex++;
                 int trailingStartPos = -1;
                 for (int i = cmdIndex; i < inputArgs.Count(); i++){
-                    if (inputArgs[i][0] == ':'){//this denotes the beginning of trailing
-                        trailing = "";
+                    try{
+                        if (inputArgs[i][0] == ':'){ //this denotes the beginning of trailing
+                            trailing = "";
 
-                        //concat the args into a string
-                        var strLi = inputArgs.GetRange(i, inputArgs.Count - i);
-                        foreach (var s in strLi){
-                            trailing += s + " ";
+                            //concat the args into a string
+                            var strLi = inputArgs.GetRange(i, inputArgs.Count - i);
+                            foreach (var s in strLi){
+                                trailing += s + " ";
+                            }
+                            //remove trailing whitespace
+                            trailing = trailing.Remove(trailing.Count() - 1);
+                            trailingStartPos = i;
+                            break;
                         }
-                        //remove trailing whitespace
-                        trailing = trailing.Remove(trailing.Count() - 1);
-                        trailingStartPos = i;
-                        break;
+                    }
+                    catch (Exception e){
+                        //this should never ever happen
+                        StreamWriter sw = new StreamWriter("CRASH.txt");
+                        sw.WriteLine("CRASH REPORT AT TIME INDEX " + DateTime.Now);
+                        foreach (var arg in inputArgs){
+                            sw.WriteLine("ARG: " + arg);
+                        }
+                        sw.WriteLine("INPUT: " + input);
+                        sw.WriteLine("I: " + i);
+                        sw.Flush();
+                        sw.Close();
+                        
+                        Debug.Assert(false);
+
                     }
                 }
-                if (trailingStartPos > cmdIndex){//now grab everything between the command and the trailing
+                if (trailingStartPos > cmdIndex){ //now grab everything between the command and the trailing
                     for (int i = cmdIndex; i < trailingStartPos; i++){
                         //if (!inputArgs[i].Contains(_userNick)){
-                            cmdParams.Add(inputArgs[i] + " ");
+                        cmdParams.Add(inputArgs[i] + " ");
                         //}
                     }
                     //clip trailing whitespace
