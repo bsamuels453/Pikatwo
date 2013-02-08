@@ -49,7 +49,7 @@ namespace Pikatwo{
             init.DefaultChannel = DefaultChannelTexbox.Text;
             init.UserPass = UserPasswordTexbox.Text;
 
-            _irc = new IrcInstance(init, OnLogMsg, new IrcComponent[]{new Chatlogger(), new RawLogger()});
+            _irc = new IrcInstance(init, OnLogMsg, new IrcComponent[]{});
             _irc.Connect();
             EnableBotControls();
         }
@@ -239,5 +239,8 @@ namespace Pikatwo{
 
         #endregion
 
+        private void CompileLogsButClick(object sender, EventArgs e) {
+            Parser.ParseRaws();
+        }
     }
 }

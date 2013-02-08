@@ -50,10 +50,30 @@ namespace Pikatwo {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.BotControlContainer = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.BotControlContainer = new System.Windows.Forms.GroupBox();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.CompileLogsBut = new System.Windows.Forms.Button();
             this.JoinChannelBut = new System.Windows.Forms.Button();
             this.PartChannelBut = new System.Windows.Forms.Button();
             this.PingBut = new System.Windows.Forms.Button();
@@ -63,8 +83,8 @@ namespace Pikatwo {
             this.SendMsgTextbox = new System.Windows.Forms.TextBox();
             this.ConnectionCredentials.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.BotControlContainer.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SendMsgContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -221,9 +241,9 @@ namespace Pikatwo {
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.LogTextbox);
-            this.groupBox2.Location = new System.Drawing.Point(348, 122);
+            this.groupBox2.Location = new System.Drawing.Point(12, 122);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(409, 346);
+            this.groupBox2.Size = new System.Drawing.Size(322, 389);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Log";
@@ -235,7 +255,7 @@ namespace Pikatwo {
             this.LogTextbox.Location = new System.Drawing.Point(3, 16);
             this.LogTextbox.Name = "LogTextbox";
             this.LogTextbox.ReadOnly = true;
-            this.LogTextbox.Size = new System.Drawing.Size(403, 327);
+            this.LogTextbox.Size = new System.Drawing.Size(316, 370);
             this.LogTextbox.TabIndex = 0;
             this.LogTextbox.Text = "";
             this.LogTextbox.WordWrap = false;
@@ -263,54 +283,270 @@ namespace Pikatwo {
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.NotifyIcon1Click);
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Location = new System.Drawing.Point(348, 8);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(409, 108);
-            this.groupBox3.TabIndex = 17;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Connection Info";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 33);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(100, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Connection Uptime:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 17);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Uptime:";
-            // 
             // BotControlContainer
             // 
             this.BotControlContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.BotControlContainer.Controls.Add(this.groupBox1);
+            this.BotControlContainer.Controls.Add(this.CompileLogsBut);
             this.BotControlContainer.Controls.Add(this.JoinChannelBut);
             this.BotControlContainer.Controls.Add(this.PartChannelBut);
             this.BotControlContainer.Controls.Add(this.PingBut);
             this.BotControlContainer.Controls.Add(this.SendMsgContainer);
             this.BotControlContainer.Controls.Add(this.ConnectBut);
             this.BotControlContainer.Controls.Add(this.DisconnectBut);
-            this.BotControlContainer.Location = new System.Drawing.Point(12, 122);
+            this.BotControlContainer.Location = new System.Drawing.Point(348, 12);
             this.BotControlContainer.Name = "BotControlContainer";
-            this.BotControlContainer.Size = new System.Drawing.Size(330, 343);
+            this.BotControlContainer.Size = new System.Drawing.Size(273, 499);
             this.BotControlContainer.TabIndex = 18;
             this.BotControlContainer.TabStop = false;
             this.BotControlContainer.Text = "Bot Control";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.button13);
+            this.groupBox1.Controls.Add(this.button14);
+            this.groupBox1.Controls.Add(this.button11);
+            this.groupBox1.Controls.Add(this.button9);
+            this.groupBox1.Controls.Add(this.button12);
+            this.groupBox1.Controls.Add(this.button7);
+            this.groupBox1.Controls.Add(this.button10);
+            this.groupBox1.Controls.Add(this.button8);
+            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.button6);
+            this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Location = new System.Drawing.Point(12, 222);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(253, 216);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Feature";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 18);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(70, 13);
+            this.label12.TabIndex = 29;
+            this.label12.Text = "Chat Logging";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 47);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(89, 13);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Chat Responding";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 76);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(108, 13);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "NOTIMPLEMENTED";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 105);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(108, 13);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "NOTIMPLEMENTED";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 134);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(108, 13);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "NOTIMPLEMENTED";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 163);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(108, 13);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "NOTIMPLEMENTED";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 192);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(108, 13);
+            this.label6.TabIndex = 25;
+            this.label6.Text = "NOTIMPLEMENTED";
+            // 
+            // button13
+            // 
+            this.button13.Enabled = false;
+            this.button13.Location = new System.Drawing.Point(211, 13);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(33, 23);
+            this.button13.TabIndex = 24;
+            this.button13.Text = "Off";
+            this.button13.UseVisualStyleBackColor = true;
+            // 
+            // button14
+            // 
+            this.button14.Enabled = false;
+            this.button14.Location = new System.Drawing.Point(175, 13);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(30, 23);
+            this.button14.TabIndex = 23;
+            this.button14.Text = "On";
+            this.button14.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Enabled = false;
+            this.button11.Location = new System.Drawing.Point(211, 42);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(33, 23);
+            this.button11.TabIndex = 20;
+            this.button11.Text = "Off";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Enabled = false;
+            this.button9.Location = new System.Drawing.Point(211, 71);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(33, 23);
+            this.button9.TabIndex = 20;
+            this.button9.Text = "Off";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            this.button12.Enabled = false;
+            this.button12.Location = new System.Drawing.Point(175, 42);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(30, 23);
+            this.button12.TabIndex = 19;
+            this.button12.Text = "On";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Enabled = false;
+            this.button7.Location = new System.Drawing.Point(211, 100);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(33, 23);
+            this.button7.TabIndex = 22;
+            this.button7.Text = "Off";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Enabled = false;
+            this.button10.Location = new System.Drawing.Point(175, 71);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(30, 23);
+            this.button10.TabIndex = 19;
+            this.button10.Text = "On";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Enabled = false;
+            this.button8.Location = new System.Drawing.Point(175, 100);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(30, 23);
+            this.button8.TabIndex = 21;
+            this.button8.Text = "On";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(211, 129);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(33, 23);
+            this.button5.TabIndex = 20;
+            this.button5.Text = "Off";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Enabled = false;
+            this.button3.Location = new System.Drawing.Point(211, 158);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(33, 23);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Off";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Enabled = false;
+            this.button6.Location = new System.Drawing.Point(175, 129);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(30, 23);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "On";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Enabled = false;
+            this.button4.Location = new System.Drawing.Point(175, 158);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(30, 23);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "On";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Enabled = false;
+            this.button2.Location = new System.Drawing.Point(211, 187);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(33, 23);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Off";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(175, 187);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(30, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "On";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // CompileLogsBut
+            // 
+            this.CompileLogsBut.Location = new System.Drawing.Point(9, 95);
+            this.CompileLogsBut.Name = "CompileLogsBut";
+            this.CompileLogsBut.Size = new System.Drawing.Size(82, 23);
+            this.CompileLogsBut.TabIndex = 20;
+            this.CompileLogsBut.Text = "Compile Logs";
+            this.CompileLogsBut.UseVisualStyleBackColor = true;
+            this.CompileLogsBut.Click += new System.EventHandler(this.CompileLogsButClick);
+            // 
             // JoinChannelBut
             // 
-            this.JoinChannelBut.Location = new System.Drawing.Point(148, 47);
+            this.JoinChannelBut.Location = new System.Drawing.Point(145, 47);
             this.JoinChannelBut.Name = "JoinChannelBut";
             this.JoinChannelBut.Size = new System.Drawing.Size(81, 23);
             this.JoinChannelBut.TabIndex = 19;
@@ -320,7 +556,7 @@ namespace Pikatwo {
             // 
             // PartChannelBut
             // 
-            this.PartChannelBut.Location = new System.Drawing.Point(62, 47);
+            this.PartChannelBut.Location = new System.Drawing.Point(59, 47);
             this.PartChannelBut.Name = "PartChannelBut";
             this.PartChannelBut.Size = new System.Drawing.Size(80, 23);
             this.PartChannelBut.TabIndex = 18;
@@ -330,7 +566,7 @@ namespace Pikatwo {
             // 
             // PingBut
             // 
-            this.PingBut.Location = new System.Drawing.Point(12, 47);
+            this.PingBut.Location = new System.Drawing.Point(9, 47);
             this.PingBut.Name = "PingBut";
             this.PingBut.Size = new System.Drawing.Size(44, 23);
             this.PingBut.TabIndex = 17;
@@ -343,16 +579,16 @@ namespace Pikatwo {
             this.SendMsgContainer.Controls.Add(this.SendMsgButton);
             this.SendMsgContainer.Controls.Add(this.SendMsgCombobox);
             this.SendMsgContainer.Controls.Add(this.SendMsgTextbox);
-            this.SendMsgContainer.Location = new System.Drawing.Point(6, 288);
+            this.SendMsgContainer.Location = new System.Drawing.Point(6, 444);
             this.SendMsgContainer.Name = "SendMsgContainer";
-            this.SendMsgContainer.Size = new System.Drawing.Size(315, 49);
+            this.SendMsgContainer.Size = new System.Drawing.Size(259, 49);
             this.SendMsgContainer.TabIndex = 16;
             this.SendMsgContainer.TabStop = false;
             this.SendMsgContainer.Text = "Send Msg";
             // 
             // SendMsgButton
             // 
-            this.SendMsgButton.Location = new System.Drawing.Point(265, 20);
+            this.SendMsgButton.Location = new System.Drawing.Point(206, 18);
             this.SendMsgButton.Name = "SendMsgButton";
             this.SendMsgButton.Size = new System.Drawing.Size(44, 20);
             this.SendMsgButton.TabIndex = 2;
@@ -375,16 +611,15 @@ namespace Pikatwo {
             // 
             this.SendMsgTextbox.Location = new System.Drawing.Point(103, 20);
             this.SendMsgTextbox.Name = "SendMsgTextbox";
-            this.SendMsgTextbox.Size = new System.Drawing.Size(156, 20);
+            this.SendMsgTextbox.Size = new System.Drawing.Size(98, 20);
             this.SendMsgTextbox.TabIndex = 0;
             // 
             // PikaForm
             // 
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(971, 523);
+            this.ClientSize = new System.Drawing.Size(629, 523);
             this.Controls.Add(this.BotControlContainer);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.ConnectionCredentials);
             this.Name = "PikaForm";
@@ -393,9 +628,9 @@ namespace Pikatwo {
             this.ConnectionCredentials.ResumeLayout(false);
             this.ConnectionCredentials.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.BotControlContainer.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.SendMsgContainer.ResumeLayout(false);
             this.SendMsgContainer.PerformLayout();
             this.ResumeLayout(false);
@@ -426,17 +661,37 @@ namespace Pikatwo {
         private SaveFileDialog saveFileDialog1;
         private RichTextBox LogTextbox;
         private NotifyIcon notifyIcon1;
-        private GroupBox groupBox3;
-        private Label label6;
         private GroupBox BotControlContainer;
         private GroupBox SendMsgContainer;
         private TextBox SendMsgTextbox;
         private Button SendMsgButton;
         private ComboBox SendMsgCombobox;
-        private Label label7;
         private Button JoinChannelBut;
         private Button PartChannelBut;
         private Button PingBut;
+        private Button CompileLogsBut;
+        private GroupBox groupBox1;
+        private Label label12;
+        private Label label11;
+        private Label label10;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label label6;
+        private Button button13;
+        private Button button14;
+        private Button button11;
+        private Button button9;
+        private Button button12;
+        private Button button7;
+        private Button button10;
+        private Button button8;
+        private Button button5;
+        private Button button3;
+        private Button button6;
+        private Button button4;
+        private Button button2;
+        private Button button1;
     }
 }
 
