@@ -42,3 +42,6 @@ bin*/
 TestProject*/
 [Rr]elease*/
 _ReSharper*/
+*wordRanking.json
+*recordingBlacklist.json
+*mentionBlacklist.json
