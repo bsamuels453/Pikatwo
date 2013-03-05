@@ -1,4 +1,22 @@
 {
+	"IntroPhrases" : [
+		"Let the games begin!",             "Sweet Jesus!",
+		"Not that!",                        "At last!",
+		"Land o' Goshen!",                  "Is that all?",
+		"Cheese it, the cops!",             "I never dreamed it could be",
+		"If I do, you won't respect me!",   "Now!",
+		"Open sesame!",                     "EMR!",
+		"Again!",                           "Faster!",
+		"Harder!",                          "Help!",
+		"Fuck me harder!",                  "Is it in yet?",
+		"You aren't my father!",            "Doctor, that's not *my* shou",
+		"No, no, do the goldfish!",         "Holy Batmobile, Batman!",
+		"He's dead, he's dead!",            "Take me, Robert!",
+		"I'm a Republican!",                "Put four fingers in!",
+		"What a lover!",                    "Talk dirty, you pig!",
+		"The ceiling needs painting,",      "Suck harder!",
+		"The animals will hear!",           "Not in public!"
+	],
 	"SaidAliases" : [
 		"bellowed",             "yelped",               "croaked",
 		"growled",              "panted",               "moaned",
