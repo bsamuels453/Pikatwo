@@ -56,7 +56,7 @@ namespace Pikatwo{
                     DefaultChannelTexbox.Text
                     ) 
                  */
-                new LewdResponder()
+                new LewdResponder("pikatwo", DefaultChannelTexbox.Text)
             });
             _irc.Connect();
             EnableBotControls();
