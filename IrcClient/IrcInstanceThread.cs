@@ -49,7 +49,7 @@ namespace IrcClient{
                     }
 
                     lock (_timeSinceLastPing){
-                        if (_timeSinceLastPing.ElapsedMilliseconds > 150000){ //150 sec
+                        if (_timeSinceLastPing.ElapsedMilliseconds > 200000){ //200 sec
                             input = null;
                             _extLogWriter.Invoke("Ping timeout: " + _timeSinceLastPing.ElapsedMilliseconds/1000 + " seconds");
                             _exceptionOkay = true;
@@ -148,9 +148,6 @@ namespace IrcClient{
                         sw.WriteLine("I: " + i);
                         sw.Flush();
                         sw.Close();
-                        
-                        Debug.Assert(false);
-
                     }
                 }
                 if (trailingStartPos > cmdIndex){ //now grab everything between the command and the trailing

@@ -39,7 +39,6 @@ namespace Pikatwo{
                         //2. A 1-100 die is rolled, if the quote has probability of 30, a roll between 1 and 30 is required.
                         //   for the quote to be chosen.
                         //3. If the roll fails, another quote is chosen at random and die is rolled again.
-
                         int randIdx = _randGen.Next(0, _quotes.Length);
 
                         Quote quoteToUse;
@@ -52,6 +51,10 @@ namespace Pikatwo{
                             randIdx = _randGen.Next(0, _quotes.Length);
                         }
                         string parsedName = msg.Prefix.Substring(1);
+                        if(parsedName.Contains("bro-bot")){
+                            return;
+                        }
+
                         int delimitierIdx = parsedName.IndexOf('!');
                         parsedName = parsedName.Substring(0, delimitierIdx);
                         string replacedQuote = quoteToUse.Text.Replace("$(0)",parsedName);

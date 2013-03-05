@@ -19,7 +19,7 @@ namespace Pikatwo {
             //FilterNoMentionComments("nicks.txt", "raw.txt", "mentionFiltered.txt");
             //FilterTalkerBlacklist("mentionBlacklist.json", "mentionFiltered.txt", "blacklistFiltered.txt");
             //ConvertInlineNicks("blacklistFiltered.txt", "inlinedQuotes.txt", "nicks.txt")
-            //ScoreQuotes("inlinedQuotes.txt","wordRanking.json", "parsedLogs.txt");
+            ScoreQuotes("inlinedQuotes.txt","wordRanking.json", "parsedLogs.txt");
             
         }
         static void GenNicks(string nickFileName, string inFileName, string blacklistName) {
@@ -248,7 +248,7 @@ namespace Pikatwo {
             sr.Close();
 
             for (int i = 0; i < quotes.Count; i++){
-                int score = 1;
+                int score = 10;
                 var str = quotes[i].Text;
                 if (
                     str.Contains("www.") ||
