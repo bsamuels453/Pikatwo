@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chatlogger.cs" />
+    <Compile Include="LewdResponder.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="PikaForm.cs">
       <SubType>Form</SubType>

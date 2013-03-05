@@ -50,11 +50,13 @@ namespace Pikatwo{
             init.UserPass = UserPasswordTexbox.Text;
 
             _irc = new IrcInstance(init, OnLogMsg, new IrcComponent[] { 
-                new Responder(
+                /*new Responder(
                     "pikatwo",
                     "parsedLogs.txt", 
                     DefaultChannelTexbox.Text
                     ) 
+                 */
+                new LewdResponder()
             });
             _irc.Connect();
             EnableBotControls();
