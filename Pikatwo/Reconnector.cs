@@ -6,15 +6,15 @@ using System;
 
 namespace Pikatwo{
     internal class Reconnector : IrcComponent{
-        ClientInterface _ircClient;
+        ClientInterface _ircInterface;
 
         #region IrcComponent Members
 
-        public ClientInterface IrcClient{
-            get { return _ircClient; }
+        public ClientInterface IrcInterface{
+            get { return _ircInterface; }
             set{
-                _ircClient = value;
-                _ircClient.OnDisconnect += OnDisconnect;
+                _ircInterface = value;
+                _ircInterface.Client.OnDisconnected += OnDisconnect;
             }
         }
 
@@ -24,7 +24,7 @@ namespace Pikatwo{
         #endregion
 
         void OnDisconnect(object sender, EventArgs eventArgs){
-            _ircClient.Connect();
+            _ircInterface.Connect();
         }
     }
 }
