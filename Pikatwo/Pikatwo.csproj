@@ -47,6 +47,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authenticator.cs" />
+    <Compile Include="AuthLevel.cs" />
+    <Compile Include="ChannelManage.cs" />
+    <Compile Include="ClientInterface.cs" />
+    <Compile Include="OnCommandArgs.cs" />
+    <Compile Include="Reconnector.cs" />
+    <Compile Include="IrcComponent.cs" />
+    <Compile Include="IrcLoginCreds.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
