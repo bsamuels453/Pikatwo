@@ -34,12 +34,14 @@ namespace Pikatwo{
 
         void OnRegistered(object sender, EventArgs eventArgs){
             foreach (var channel in _channels){
+                _ircInterface.DebugLog("Joining channel " + channel);
                 _ircInterface.Client.RfcJoin(channel);
             }
         }
 
         void OnKick(object sender, KickEventArgs kickEventArgs){
             if (kickEventArgs.Whom.Equals(_ircInterface.Nick)){
+                _ircInterface.DebugLog("Kicked from channel " + kickEventArgs.Channel + ", attempting to rejoin");
                 _ircInterface.Client.RfcJoin(kickEventArgs.Channel);
             }
         }

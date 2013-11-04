@@ -24,7 +24,9 @@ namespace Pikatwo{
         #endregion
 
         void OnDisconnect(object sender, EventArgs eventArgs){
+            _ircInterface.DebugLog("Disconnected from server. Attempting reconnect...");
             _ircInterface.Connect();
+            _ircInterface.DebugLog("Reconnection successful.");
         }
     }
 }
