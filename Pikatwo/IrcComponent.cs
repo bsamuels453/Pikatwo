@@ -1,6 +1,6 @@
 ﻿namespace Pikatwo{
     internal interface IrcComponent{
-        ClientInterface IrcClient { get; set; }
+        ClientInterface IrcInterface { get; set; }
         void Update(long secsSinceStart);
     }
 }
