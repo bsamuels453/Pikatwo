@@ -37,6 +37,8 @@ TestProject3*/
 *.dll
 *.CodeAnalysisLog.xml
 *.lastcodeanalysissucceeded
+*auth.json
+*config.json
 obj*/
 bin*/
 TestProject*/
