@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace DataProcessing{
     internal class Program{
         const long _context = 5;
-        const int _repliesPerFile = 1000;
+        const int _repliesPerFile = 10000;
 
         static void Main(string[] args){
             //StripExcessData();
@@ -48,21 +48,32 @@ namespace DataProcessing{
                 var candidate = new Candidate();
                 candidate.InsertOffset = insertOffset;
                 candidate.Message = targetLine.Remove(insertOffset, targetNick.Length);
-                if (candidate.Message.Length < 3){
+                if (candidate.Message.Length < 3)
                     continue;
-                }
+                if (candidate.Message.Contains('>'))
+                    continue;
+                if (candidate.Message.Contains('['))
+                    continue;
 
                 var hashes = GenerateContextHashes(targetLineIdx, lines);
                 candidate.Hashes = hashes;
                 candidates.Add(candidate);
             }
 
+            CleanOutputFolder();
             for (int i = 0; i < candidates.Count; i += _repliesPerFile){
                 var sw = new StreamWriter("responseData/responses" + i/_repliesPerFile + ".json");
                 var fileCandidates = candidates.Skip(i).Take(_repliesPerFile).ToArray();
                 var serialized = JsonConvert.SerializeObject(fileCandidates, Formatting.Indented);
                 sw.Write(serialized);
                 sw.Close();
+            }
+        }
+
+        static void CleanOutputFolder(){
+            var trashFiles = Directory.GetFiles("responseData");
+            foreach (var file in trashFiles){
+                File.Delete(file);
             }
         }
 
