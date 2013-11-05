@@ -27,6 +27,7 @@ Thumbs.db
 *.psess
 *.vsmdi
 *.sbr
+*responseData
 TestProject3*/
 *.exe
 *.application
