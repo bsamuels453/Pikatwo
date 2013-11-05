@@ -85,8 +85,17 @@ namespace Pikatwo{
 
         public void Run(){
             Connect();
+            var lastUpdate = DateTime.Now;
+            long numSecondsSinceStart = 0;
             while (true){
                 Client.ReadLine(true);
+                if ((DateTime.Now - lastUpdate).TotalSeconds > 1){
+                    foreach (var component in _components){
+                        component.Update(numSecondsSinceStart);
+                    }
+                    numSecondsSinceStart++;
+                    lastUpdate = DateTime.Now;
+                }
             }
         }
 
