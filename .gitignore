@@ -13,6 +13,7 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
+*candidatesWithHashes3.json
 *.cachefile
 *.txt
 *.resources
