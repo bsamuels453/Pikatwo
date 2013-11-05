@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C146FF1E-7D4D-4E25-91D8-A4A472963885}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pikatwo</RootNamespace>
     <AssemblyName>Pikatwo</AssemblyName>
@@ -56,6 +56,7 @@
     <Compile Include="IrcComponent.cs" />
     <Compile Include="IrcLoginCreds.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Responder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
