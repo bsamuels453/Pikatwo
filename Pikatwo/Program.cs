@@ -25,6 +25,7 @@ namespace Pikatwo{
             var components = new List<IrcComponent>();
             var channels = config["Channels"].ToObject<string[]>();
             components.Add(new ChannelManage(channels));
+            components.Add(new Responder(creds.Nick));
 
             var client = new ClientInterface(creds, components);
             client.Run();
