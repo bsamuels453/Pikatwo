@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,9 +10,99 @@ using Newtonsoft.Json;
 
 namespace DataProcessing{
     internal class Program{
+        const long _context = 5;
+        const int _repliesPerFile = 1000;
+
         static void Main(string[] args){
             //StripExcessData();
             //LocateCandidateLines();
+            GenerateCandidateMetadata();
+        }
+
+        static void GenerateCandidateMetadata(){
+            string[] lines;
+            var candidates = new List<Candidate>(150000);
+            using (var inStrm = new StreamReader("generation/dateRemoved1.txt")){
+                var s = inStrm.ReadToEnd();
+                lines = s.Split(new[]{"" + '\r' + '\n'}, StringSplitOptions.None);
+            }
+            for (int i = 0; i < lines.Length; i++){
+                lines[i] = lines[i].ToLower();
+            }
+
+            var candidateStream = new StreamReader("generation/candidates2.txt");
+
+            var candidStr = "";
+            while ((candidStr = candidateStream.ReadLine()) != null){
+                int commaIdx = candidStr.IndexOf(',');
+                var targetLineIdx = long.Parse(candidStr.Substring(0, commaIdx));
+                if (targetLineIdx <= _context || lines.Length - targetLineIdx <= _context)
+                    continue;
+                var targetNick = candidStr.Substring(commaIdx + 1).ToLower();
+
+                var targetLine = lines[targetLineIdx];
+                int msgBegin = targetLine.IndexOf('>');
+                targetLine = targetLine.Substring(msgBegin + 2);
+                var insertOffset = targetLine.IndexOf(targetNick, StringComparison.CurrentCulture);
+
+                var candidate = new Candidate();
+                candidate.InsertOffset = insertOffset;
+                candidate.Message = targetLine.Remove(insertOffset, targetNick.Length);
+                if (candidate.Message.Length < 3){
+                    continue;
+                }
+
+                var hashes = GenerateContextHashes(targetLineIdx, lines);
+                candidate.Hashes = hashes;
+                candidates.Add(candidate);
+            }
+
+            for (int i = 0; i < candidates.Count; i += _repliesPerFile){
+                var sw = new StreamWriter("responseData/responses" + i/_repliesPerFile + ".json");
+                var fileCandidates = candidates.Skip(i).Take(_repliesPerFile).ToArray();
+                var serialized = JsonConvert.SerializeObject(fileCandidates, Formatting.Indented);
+                sw.Write(serialized);
+                sw.Close();
+            }
+        }
+
+        static Dictionary<int, int> GenerateContextHashes(long lineIdx, string[] lines){
+            var hashes = new Dictionary<int, int>(200);
+            for (long i = lineIdx - _context; i < lineIdx + _context; i++){
+                var line = lines[i];
+                if (line[0] == '*')
+                    continue;
+                var split = line.Split();
+                foreach (var word in split){
+                    var hash = FnvHash(word);
+                    if (hashes.ContainsKey(hash)){
+                        hashes[hash]++;
+                    }
+                    else{
+                        hashes.Add(hash, 1);
+                    }
+                }
+            }
+            return hashes;
+        }
+
+        static int FnvHash(string data){
+            unchecked{
+                var bytes = new byte[data.Length*sizeof (char)];
+                Buffer.BlockCopy(data.ToCharArray(), 0, bytes, 0, bytes.Length);
+                const int p = 16777619;
+                int hash = (int) 2166136261;
+
+                for (int i = 0; i < data.Length; i++)
+                    hash = (hash ^ data[i])*p;
+
+                hash += hash << 13;
+                hash ^= hash >> 7;
+                hash += hash << 3;
+                hash ^= hash >> 17;
+                hash += hash << 5;
+                return hash;
+            }
         }
 
         static void LocateCandidateLines(){
@@ -88,7 +179,7 @@ namespace DataProcessing{
             var rawDataStrm = new StreamReader("generation/rawLogs0.txt");
             var dateRemovedStrm = new StreamWriter("generation/dateRemoved1.txt");
             string[] blacklist;
-            using (var blacklistReader = new StreamReader("generation/blacklist.json")) {
+            using (var blacklistReader = new StreamReader("generation/blacklist.json")){
                 blacklist = JsonConvert.DeserializeObject<string[]>(blacklistReader.ReadToEnd());
             }
             dateRemovedStrm.AutoFlush = false;
@@ -106,5 +197,15 @@ namespace DataProcessing{
             rawDataStrm.Close();
             dateRemovedStrm.Close();
         }
+
+        #region Nested type: Candidate
+
+        class Candidate{
+            public Dictionary<int, int> Hashes;
+            public int InsertOffset;
+            public string Message;
+        }
+
+        #endregion
     }
 }
