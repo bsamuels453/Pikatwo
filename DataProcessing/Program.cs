@@ -19,8 +19,20 @@ namespace DataProcessing{
             GenerateCandidateMetadata();
         }
 
+        static int[] GetBlacklistedHashes(){
+            var sr = new StreamReader("generation/hashblacklist.json");
+            var hashWords = JsonConvert.DeserializeObject<string[]>(sr.ReadToEnd());
+            sr.Close();
+            var hashes = new List<int>();
+            foreach (var word in hashWords){
+                hashes.Add(FnvHash(word));
+            }
+            return hashes.ToArray();
+        }
+
         static void GenerateCandidateMetadata(){
             string[] lines;
+            var blacklist = GetBlacklistedHashes();
             var candidates = new List<Candidate>(150000);
             using (var inStrm = new StreamReader("generation/dateRemoved1.txt")){
                 var s = inStrm.ReadToEnd();
@@ -55,7 +67,7 @@ namespace DataProcessing{
                 if (candidate.Message.Contains('['))
                     continue;
 
-                var hashes = GenerateContextHashes(targetLineIdx, lines);
+                var hashes = GenerateContextHashes(targetLineIdx, lines, blacklist);
                 candidate.Hashes = hashes;
                 candidates.Add(candidate);
             }
@@ -77,21 +89,37 @@ namespace DataProcessing{
             }
         }
 
-        static Dictionary<int, int> GenerateContextHashes(long lineIdx, string[] lines){
+        static Dictionary<int, int> GenerateContextHashes(long lineIdx, string[] lines, int[] blacklist){
             var hashes = new Dictionary<int, int>(200);
             for (long i = lineIdx - _context; i < lineIdx + _context; i++){
                 var line = lines[i];
                 if (line[0] == '*')
                     continue;
-                var split = line.Split();
-                foreach (var word in split){
-                    var hash = FnvHash(word);
-                    if (hashes.ContainsKey(hash)){
-                        hashes[hash]++;
+                var lineHash = CalcHashes(line);
+                foreach (var pair in lineHash){
+                    if (blacklist.Contains(pair.Key))
+                        continue;
+                    if (hashes.ContainsKey(pair.Key)){
+                        hashes[pair.Key]++;
                     }
                     else{
-                        hashes.Add(hash, 1);
+                        hashes.Add(pair.Key, 1);
                     }
+                }
+            }
+            return hashes;
+        }
+
+        static Dictionary<int, int> CalcHashes(string str){
+            var hashes = new Dictionary<int, int>(200);
+            var split = str.Split();
+            foreach (var word in split){
+                var hash = FnvHash(word);
+                if (hashes.ContainsKey(hash)){
+                    hashes[hash]++;
+                }
+                else{
+                    hashes.Add(hash, 1);
                 }
             }
             return hashes;
