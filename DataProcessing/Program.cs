@@ -15,9 +15,9 @@ namespace DataProcessing{
         }
 
         static void LocateCandidateLines(){
-            var inStrm = new StreamReader("data/dateRemoved1.txt");
+            var inStrm = new StreamReader("generation/dateRemoved1.txt");
             var usersInChannel = new List<string>(500);
-            var candidates = new StreamWriter("data/candidates2.txt");
+            var candidates = new StreamWriter("generation/candidates2.txt");
             candidates.AutoFlush = false;
 
             string s = "";
@@ -85,10 +85,10 @@ namespace DataProcessing{
         }
 
         static void StripExcessData(){
-            var rawDataStrm = new StreamReader("data/rawLogs0.txt");
-            var dateRemovedStrm = new StreamWriter("data/dateRemoved1.txt");
+            var rawDataStrm = new StreamReader("generation/rawLogs0.txt");
+            var dateRemovedStrm = new StreamWriter("generation/dateRemoved1.txt");
             string[] blacklist;
-            using (var blacklistReader = new StreamReader("data/blacklist.json")){
+            using (var blacklistReader = new StreamReader("generation/blacklist.json")) {
                 blacklist = JsonConvert.DeserializeObject<string[]>(blacklistReader.ReadToEnd());
             }
             dateRemovedStrm.AutoFlush = false;
