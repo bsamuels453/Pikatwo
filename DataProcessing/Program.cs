@@ -14,8 +14,8 @@ namespace DataProcessing{
         const int _repliesPerFile = 10000;
 
         static void Main(string[] args){
-            //StripExcessData();
-            //LocateCandidateLines();
+            StripExcessData();
+            LocateCandidateLines();
             GenerateCandidateMetadata();
         }
 
