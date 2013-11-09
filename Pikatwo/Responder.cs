@@ -35,6 +35,7 @@ namespace Pikatwo{
                 _ircInterface = value;
                 _ircInterface.OnIrcCommand += IrcInterfaceOnOnIrcCommand;
                 _ircInterface.Client.OnChannelMessage += ClientOnOnChannelMessage;
+                _ircInterface.Client.OnChannelAction += ClientOnOnChannelMessage;
             }
         }
 
@@ -85,7 +86,7 @@ namespace Pikatwo{
 
         void ClientOnOnChannelMessage(object sender, IrcEventArgs ircEventArgs){
             string msg = ircEventArgs.Data.Message;
-            if (msg == null) {
+            if (msg == null){
                 return;
             }
             if (msg.Contains(_botNick)){
