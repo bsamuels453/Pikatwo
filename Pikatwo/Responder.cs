@@ -85,6 +85,9 @@ namespace Pikatwo{
 
         void ClientOnOnChannelMessage(object sender, IrcEventArgs ircEventArgs){
             string msg = ircEventArgs.Data.Message;
+            if (msg == null) {
+                return;
+            }
             if (msg.Contains(_botNick)){
                 var msgHashes = GenerateMsgHashes(msg.ToLower());
 
