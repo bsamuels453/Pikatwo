@@ -15,6 +15,7 @@ namespace DataProcessing{
 
         static void Main(string[] args){
             StripExcessData();
+            GenerateUsernames();
             LocateCandidateLines();
             GenerateCandidateMetadata();
         }
@@ -142,6 +143,31 @@ namespace DataProcessing{
                 hash += hash << 5;
                 return hash;
             }
+        }
+
+        static void GenerateUsernames(){
+            var inStrm = new StreamReader("generation/dateRemoved1.txt");
+            var nicks = new List<string>();
+            
+            string s = "";
+            while ((s = inStrm.ReadLine()) != null){
+                var name = s.Substring(1);
+                if (!name.Contains('>')) {
+                    continue;
+                }
+                var terminator = name.IndexOf('>');
+                name = name.Substring(0, terminator);
+                if (!nicks.Contains(name)){
+                    nicks.Add(name);
+                }
+            }
+            nicks = nicks.Where(nick => nick.Length > 4).ToList();
+            nicks.Sort((u1, u2) => -1 * u1.Length.CompareTo(u2.Length));
+            var userStrm = new StreamWriter("generation/nicks.txt");
+            foreach (var nick in nicks){
+                userStrm.WriteLine(nick);
+            }
+            userStrm.Close();
         }
 
         static void LocateCandidateLines(){
