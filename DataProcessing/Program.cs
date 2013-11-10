@@ -172,46 +172,22 @@ namespace DataProcessing{
 
         static void LocateCandidateLines(){
             var inStrm = new StreamReader("generation/dateRemoved1.txt");
-            var usersInChannel = new List<string>(500);
             var candidates = new StreamWriter("generation/candidates2.txt");
             candidates.AutoFlush = false;
+
+            List<string> nicks = new List<string>(1000);
+            using (var sr = new StreamReader("generation/nicks.txt")){
+                string nickStr = "";
+                while ((nickStr = sr.ReadLine()) != null){
+                    nicks.Add(nickStr);
+                }
+            }
 
             string s = "";
             int lineIdx = 0;
             while ((s = inStrm.ReadLine()) != null){
                 //a line is ignored for one of two reasons - it's an edge case line that can't be parsed, or it's an ENTER/EXIT channel msg
-                bool ignoreLine = false;
-                if (s[0] == '*'){
-                    //user entered/exited channel
-                    var name = s.Substring(2);
-                    var terminator = name.IndexOf(' ');
-                    name = name.Substring(0, terminator);
-                    var trailing = s.Substring(terminator + 2);
-                    if (trailing.Contains("has joined")){
-                        usersInChannel.Remove(name);
-                        usersInChannel.Add(name);
-                    }
-                    else{
-                        usersInChannel.Remove(name);
-                    }
-                    ignoreLine = true;
-                }
-                else{
-                    //standard user message
-                    try{
-                        var name = s.Substring(1);
-                        var terminator = name.IndexOf('>');
-                        name = name.Substring(0, terminator);
-
-                        if (!usersInChannel.Contains(name)){
-                            usersInChannel.Add(name);
-                        }
-                    }
-                    catch{
-                        //handles crazy edge cases - virtually no useful data causes this exception
-                        ignoreLine = true;
-                    }
-                }
+                bool ignoreLine = (s[0] == '*');
 
                 //note: the branch predictor is going to pretty much optimize this conditional out w/ ~5% fail
                 if (!ignoreLine){
@@ -221,7 +197,7 @@ namespace DataProcessing{
                     bool containsNick = false;
                     string mentionedNick = "";
 
-                    foreach (var nick in usersInChannel){
+                    foreach (var nick in nicks) {
                         if (msg.Contains(nick)){
                             mentionedNick = nick;
                             containsNick = true;
