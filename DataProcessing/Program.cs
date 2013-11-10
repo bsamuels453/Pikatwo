@@ -93,6 +93,8 @@ namespace DataProcessing{
         static Dictionary<int, int> GenerateContextHashes(long lineIdx, string[] lines, int[] blacklist){
             var hashes = new Dictionary<int, int>(200);
             for (long i = lineIdx - _context; i < lineIdx + _context; i++){
+                if (i == lineIdx)
+                    continue;
                 var line = lines[i];
                 if (line[0] == '*')
                     continue;
@@ -148,11 +150,11 @@ namespace DataProcessing{
         static void GenerateUsernames(){
             var inStrm = new StreamReader("generation/dateRemoved1.txt");
             var nicks = new List<string>();
-            
+
             string s = "";
             while ((s = inStrm.ReadLine()) != null){
                 var name = s.Substring(1);
-                if (!name.Contains('>')) {
+                if (!name.Contains('>')){
                     continue;
                 }
                 var terminator = name.IndexOf('>');
@@ -162,7 +164,7 @@ namespace DataProcessing{
                 }
             }
             nicks = nicks.Where(nick => nick.Length > 4).ToList();
-            nicks.Sort((u1, u2) => -1 * u1.Length.CompareTo(u2.Length));
+            nicks.Sort((u1, u2) => -1*u1.Length.CompareTo(u2.Length));
             var userStrm = new StreamWriter("generation/nicks.txt");
             foreach (var nick in nicks){
                 userStrm.WriteLine(nick);
@@ -197,7 +199,7 @@ namespace DataProcessing{
                     bool containsNick = false;
                     string mentionedNick = "";
 
-                    foreach (var nick in nicks) {
+                    foreach (var nick in nicks){
                         if (msg.Contains(nick)){
                             mentionedNick = nick;
                             containsNick = true;
