@@ -26,6 +26,7 @@ namespace Pikatwo{
             var channels = config["Channels"].ToObject<string[]>();
             components.Add(new ChannelManage(channels));
             components.Add(new Responder(creds.Nick));
+            components.Add(new GithubTracker());
 
             var client = new ClientInterface(creds, components);
             client.Run();
