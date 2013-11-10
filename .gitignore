@@ -49,3 +49,4 @@ _ReSharper*/
 *wordRanking.json
 *recordingBlacklist.json
 *mentionBlacklist.json
+*githubAnnounceHistory.json
