@@ -93,7 +93,7 @@ namespace Pikatwo{
                     foreach (var component in _components){
                         component.Update(numSecondsSinceStart);
                     }
-                    numSecondsSinceStart++;
+                    numSecondsSinceStart += (int) (DateTime.Now - lastUpdate).TotalSeconds;
                     lastUpdate = DateTime.Now;
                 }
             }
