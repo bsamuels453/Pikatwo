@@ -12,16 +12,19 @@ using Newtonsoft.Json;
 
 namespace Pikatwo{
     internal class Responder : IrcComponent{
-        const int _responsesUntilRefresh = 10;
+        const int _responsesUntilRefresh = 50;
+        const int _reusePreventionSize = 1000;
         readonly string _botNick;
         readonly Random _rand;
         readonly string[] _sourceFiles;
+        readonly List<Response> _usedResponses;
         ClientInterface _ircInterface;
         List<Response> _responses;
         int _responsesConsumed;
 
         public Responder(string botNick){
             _botNick = botNick;
+            _usedResponses = new List<Response>(_reusePreventionSize);
             _rand = new Random();
             _sourceFiles = Directory.GetFiles("responseData");
             RefreshResponses();
@@ -65,6 +68,8 @@ namespace Pikatwo{
                 responses = JsonConvert.DeserializeObject<List<Response>>(sr.ReadToEnd());
             }
 
+            responses = responses.Where(response => !_usedResponses.Contains(response)).ToList();
+
             Debug.Assert(responses != null);
             _responses = responses;
         }
@@ -105,6 +110,11 @@ namespace Pikatwo{
                 _ircInterface.Client.SendMessage(SendType.Message, ircEventArgs.Data.Channel, response);
                 _responses.RemoveAt(replyIdx);
                 _responsesConsumed++;
+
+                _usedResponses.Add(replyToUse);
+                if (_usedResponses.Count > _reusePreventionSize){
+                    _usedResponses.RemoveAt(0);
+                }
             }
         }
 
@@ -139,10 +149,20 @@ namespace Pikatwo{
 
         #region Nested type: Response
 
-        class Response{
+        class Response : IEquatable<Response>{
             public Dictionary<int, int> Hashes;
             public int InsertOffset;
             public string Message;
+
+            #region IEquatable<Response> Members
+
+            public bool Equals(Response other){
+                if (Message.Equals(other.Message))
+                    return true;
+                return false;
+            }
+
+            #endregion
         }
 
         #endregion
