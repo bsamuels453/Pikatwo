@@ -227,10 +227,11 @@ namespace DataProcessing{
             while ((s = rawDataStrm.ReadLine()) != null){
                 if (s.Equals(""))
                     continue;
+                s = s.Substring(16);
                 if (blacklist.Any(str => s.Contains(str))){
                     continue;
                 }
-                dateRemovedStrm.WriteLine(s.Substring(16));
+                dateRemovedStrm.WriteLine(s);
             }
 
             rawDataStrm.Close();
