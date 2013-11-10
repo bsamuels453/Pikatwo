@@ -53,9 +53,11 @@ namespace Pikatwo{
 
         void IrcInterfaceOnOnIrcCommand(OnCommandArgs args){
             if (args.AuthLevel == AuthLevel.Admin){
-                if (args.Message == ".refreshcache"){
+                if (args.Message == ".flushcache"){
                     RefreshResponses();
-                    _ircInterface.DebugLog("Response cache refreshed");
+                    const string logMsg = "Response cache manually flushed and reloaded successfully.";
+                    _ircInterface.Client.SendMessage(SendType.Message, args.Source, logMsg);
+                    _ircInterface.DebugLog(logMsg);
                 }
             }
         }

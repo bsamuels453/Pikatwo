@@ -66,7 +66,7 @@ namespace Pikatwo{
                 var onCommand = new OnCommandArgs
                     (
                     authLevel,
-                    ircEventArgs.Data.From,
+                    ircEventArgs.Data.Channel,
                     ircEventArgs.Data.Host,
                     ircEventArgs.Data.Ident,
                     ircEventArgs.Data.Message,

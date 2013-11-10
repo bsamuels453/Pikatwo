@@ -1,15 +1,15 @@
 ﻿namespace Pikatwo{
     internal class OnCommandArgs{
         public readonly AuthLevel AuthLevel;
-        public readonly string From;
         public readonly string Host;
         public readonly string Ident;
         public readonly string Message;
         public readonly string Nick;
+        public readonly string Source;
 
-        public OnCommandArgs(AuthLevel authLevel, string @from, string host, string ident, string message, string nick){
+        public OnCommandArgs(AuthLevel authLevel, string source, string host, string ident, string message, string nick){
             AuthLevel = authLevel;
-            From = @from;
+            Source = source;
             Host = host;
             Ident = ident;
             Message = message;
