@@ -15,6 +15,7 @@ namespace Pikatwo{
             set{
                 _ircInterface = value;
                 _ircInterface.Client.OnDisconnected += OnDisconnect;
+                _ircInterface.OnIrcCommand += IrcInterfaceOnOnIrcCommand;
             }
         }
 
@@ -22,6 +23,16 @@ namespace Pikatwo{
         }
 
         #endregion
+
+        void IrcInterfaceOnOnIrcCommand(OnCommandArgs args){
+            if (args.AuthLevel == AuthLevel.Admin){
+                if (args.Message == ".disconnect"){
+                    _ircInterface.Client.RfcDie();
+                    _ircInterface.DebugLog("Manually disconnected from the server.");
+                    _ircInterface.KillClient = true;
+                }
+            }
+        }
 
         void OnDisconnect(object sender, EventArgs eventArgs){
             _ircInterface.DebugLog("Disconnected from server. Attempting reconnect...");

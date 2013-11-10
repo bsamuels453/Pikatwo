@@ -22,8 +22,10 @@ namespace Pikatwo{
         readonly StreamWriter _debugWriter;
         readonly IrcLoginCreds _loginCreds;
         readonly StreamWriter _rawWriter;
+        public bool KillClient;
 
         public ClientInterface(IrcLoginCreds loginCreds, List<IrcComponent> auxComponents){
+            KillClient = false;
             Client = new IrcClient();
             Client.Encoding = Encoding.UTF8;
             Client.SendDelay = 200;
@@ -34,6 +36,7 @@ namespace Pikatwo{
 
             _components = auxComponents;
             _components.Add(_authenticator);
+            _components.Add(new Reconnector());
 
             foreach (var component in _components){
                 component.IrcInterface = this;
@@ -87,7 +90,7 @@ namespace Pikatwo{
             Connect();
             var lastUpdate = DateTime.Now;
             long numSecondsSinceStart = 0;
-            while (true){
+            while (!KillClient){
                 Client.ReadLine(true);
                 if ((DateTime.Now - lastUpdate).TotalSeconds > 1){
                     foreach (var component in _components){
