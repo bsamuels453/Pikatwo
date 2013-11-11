@@ -72,7 +72,7 @@ namespace Pikatwo{
                 if (announceLi.Count == 0){
                     continue;
                 }
-                int numCommits = announceLi.Count;
+                int numCommits = announceLi.Sum(announce => announce.CommitCount);
                 string beginCommit = announceLi[0].CommitHashStart;
                 string endCommit = announceLi.Last().CommitHashEnd;
                 string finalLink = announceLi[0].Link + beginCommit + "..." + endCommit;
@@ -105,6 +105,7 @@ namespace Pikatwo{
         void RefreshRepos(){
             var client = new WebClient();
             var rssStr = client.DownloadString(_rssUrl);
+            client.Dispose();
 
             var rssDocument = new HtmlDocument();
             rssDocument.LoadHtml(rssStr);
@@ -139,6 +140,19 @@ namespace Pikatwo{
                 int.Parse(publishTime.Substring(14, 2)),
                 int.Parse(publishTime.Substring(17, 2))
                 );
+
+            var client = new WebClient();
+            var commitPage = client.DownloadString(rawLink);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(commitPage);
+            client.Dispose();
+
+            var entry = doc.DocumentNode.SelectNodes("//span[@class=\"num\"]");
+            var rawNumCommits = entry[0].InnerText;
+            rawNumCommits = new string(rawNumCommits.Where(char.IsDigit).ToArray());
+            int numCommits = int.Parse(rawNumCommits);
+
+
             if (_subscribedProjects.Contains(repoName)){
                 _queuedAnnouncements.Add
                     (new QueuedAnnouncement
@@ -148,7 +162,8 @@ namespace Pikatwo{
                         repoName,
                         timestamp,
                         beginCommit,
-                        endCommit
+                        endCommit,
+                        numCommits
                         )
                     );
             }
@@ -158,19 +173,22 @@ namespace Pikatwo{
 
         class QueuedAnnouncement{
             public readonly string Author;
+            public readonly int CommitCount;
             public readonly string CommitHashEnd;
             public readonly string CommitHashStart;
             public readonly string Link;
             public readonly string RepoName;
             public DateTime TimeStamp;
 
-            public QueuedAnnouncement(string author, string link, string repoName, DateTime timeStamp, string commitHashStart, string commitHashEnd){
+            public QueuedAnnouncement(string author, string link, string repoName, DateTime timeStamp, string commitHashStart, string commitHashEnd,
+                int commitCount){
                 Author = author;
                 Link = link;
                 RepoName = repoName;
                 TimeStamp = timeStamp;
                 CommitHashStart = commitHashStart;
                 CommitHashEnd = commitHashEnd;
+                CommitCount = commitCount;
             }
         }
 
