@@ -47,8 +47,16 @@ namespace Pikatwo{
 
         public void Update(long secsSinceStart){
             if (secsSinceStart - _lastUpdate > _updateIntervalSeconds){
-                RefreshRepos();
-                DispatchAnnouncements();
+                try{
+                    RefreshRepos();
+                    DispatchAnnouncements();
+                }
+                catch (Exception e){
+                    IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
+                    IrcInterface.DebugLog(e.Message);
+                    IrcInterface.DebugLog(e.StackTrace);
+                    IrcInterface.DebugLog("END EXCEPTION");
+                }
                 _lastUpdate = secsSinceStart;
             }
         }
