@@ -16,7 +16,7 @@ namespace Pikatwo{
     internal class GithubTracker : IrcComponent{
         const string _configPath = "githubConfig.json";
         const string _announceHistoryPath = "githubAnnounceHistory.json";
-        const long _updateIntervalSeconds = 30;
+        const long _updateIntervalSeconds = 120;
         readonly List<QueuedAnnouncement> _queuedAnnouncements;
         readonly RepoAnnounceHistory[] _repoAnnounceHistory;
         readonly string _rssUrl;
