@@ -201,7 +201,7 @@ namespace DataProcessing{
 
                     foreach (var nick in nicks){
                         if (msg.Contains(nick)){
-                            if (!msg.Contains(nick + " ") && !msg.Contains(" " + nick))
+                            if (!msg.Contains(nick + " ") && !msg.Contains(" " + nick) && !msg.Contains(nick + ",") && !msg.Contains(nick + ":"))
                                 continue;
                             mentionedNick = nick;
                             containsNick = true;
