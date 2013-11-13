@@ -18,7 +18,7 @@ namespace Pikatwo{
         const string _announceHistoryPath = "githubAnnounceHistory.json";
         const long _updateIntervalSeconds = 120;
         readonly List<QueuedAnnouncement> _queuedAnnouncements;
-        readonly RepoAnnounceHistory[] _repoAnnounceHistory;
+        readonly List<RepoAnnounceHistory> _repoAnnounceHistory;
         readonly string _rssUrl;
         readonly List<string> _subscribedProjects;
         long _lastUpdate;
@@ -37,7 +37,7 @@ namespace Pikatwo{
 
             using (var sr = new StreamReader(_announceHistoryPath)){
                 var announceStr = sr.ReadToEnd();
-                _repoAnnounceHistory = JsonConvert.DeserializeObject<RepoAnnounceHistory[]>(announceStr);
+                _repoAnnounceHistory = JsonConvert.DeserializeObject<List<RepoAnnounceHistory>>(announceStr);
             }
         }
 
@@ -69,7 +69,16 @@ namespace Pikatwo{
                 var announceLi = repoAnnouncements.ToList();
                 announceLi.Sort((a1, a2) => a1.TimeStamp.CompareTo(a2.TimeStamp));
                 //cull any announcements that were made in the past
-                var announceHistory = _repoAnnounceHistory.Single(d => d.RepoName.Equals(announceLi[0].RepoName));
+                RepoAnnounceHistory announceHistory;
+                try{
+                    announceHistory = _repoAnnounceHistory.Single(d => d.RepoName.Equals(announceLi[0].RepoName));
+                }
+                catch{
+                    announceHistory = new RepoAnnounceHistory();
+                    announceHistory.AnnouncedPushes = new List<string>();
+                    announceHistory.RepoName = announceLi[0].RepoName;
+                    _repoAnnounceHistory.Add(announceHistory);
+                }
                 for (int i = 0; i < announceLi.Count; i++){
                     var identifier = announceLi[i].CommitHashStart + announceLi[i].CommitHashEnd;
                     if (announceHistory.AnnouncedPushes.Contains(identifier)){
