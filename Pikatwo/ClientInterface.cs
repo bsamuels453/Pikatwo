@@ -27,7 +27,6 @@ namespace Pikatwo{
         public ClientInterface(IrcLoginCreds loginCreds, List<IrcComponent> auxComponents){
             KillClient = false;
             Client = new IrcClient();
-            Client.Encoding = Encoding.UTF8;
             Client.SendDelay = 200;
             Client.ActiveChannelSyncing = true;
             _loginCreds = loginCreds;
