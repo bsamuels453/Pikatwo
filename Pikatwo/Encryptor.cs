@@ -52,6 +52,7 @@ namespace Pikatwo{
         void Decrypt(OnCommandArgs args, string[] inMsg){
             if (inMsg.Length < 3){
                 _ircInterface.Client.SendMessage(SendType.Message, args.Source, args.Nick + " the syntax for this command is .decrypt <key> <data>");
+                return;
             }
             try{
                 var key = AsciiToBase10(inMsg[1].ToCharArray());
@@ -86,6 +87,7 @@ namespace Pikatwo{
         void Encrypt(OnCommandArgs args, string[] inMsg){
             if (inMsg.Length < 3){
                 _ircInterface.Client.SendMessage(SendType.Message, args.Source, args.Nick + " the syntax for this command is .encrypt <key> <data>");
+                return;
             }
             try{
                 var key = AsciiToBase10(inMsg[1].ToCharArray());
