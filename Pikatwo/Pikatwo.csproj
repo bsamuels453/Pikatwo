@@ -55,6 +55,7 @@
     <Compile Include="AuthLevel.cs" />
     <Compile Include="ChannelManage.cs" />
     <Compile Include="ClientInterface.cs" />
+    <Compile Include="Encryptor.cs" />
     <Compile Include="GithubTracker.cs" />
     <Compile Include="OnCommandArgs.cs" />
     <Compile Include="Reconnector.cs" />
