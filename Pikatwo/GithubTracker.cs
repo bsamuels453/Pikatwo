@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,16 +17,20 @@ namespace Pikatwo{
     internal class GithubTracker : IrcComponent{
         const string _configPath = "githubConfig.json";
         const string _announceHistoryPath = "githubAnnounceHistory.json";
-        const long _updateIntervalSeconds = 60*60*6;
+        const long _updateIntervalSeconds = 60;
+        const long _repeatUpdateInterval = 60*60*6;
         readonly List<QueuedAnnouncement> _queuedAnnouncements;
         readonly List<RepoAnnounceHistory> _repoAnnounceHistory;
         readonly string _rssUrl;
         readonly List<string> _subscribedProjects;
+        readonly Stopwatch _updateTimeDelta;
         long _lastUpdate;
 
         public GithubTracker(){
+            _updateTimeDelta = new Stopwatch();
+            _updateTimeDelta.Start();
             _queuedAnnouncements = new List<QueuedAnnouncement>();
-            _lastUpdate = -99999999999;
+            _lastUpdate = 99999999999;
             JObject config;
             using (var sr = new StreamReader(_configPath)){
                 var configStr = sr.ReadToEnd();
@@ -46,18 +51,21 @@ namespace Pikatwo{
         public ClientInterface IrcInterface { get; set; }
 
         public void Update(long secsSinceStart){
-            if (secsSinceStart - _lastUpdate > _updateIntervalSeconds){
-                try{
-                    RefreshRepos();
-                    DispatchAnnouncements();
+            if (_updateTimeDelta.Elapsed.Seconds > _updateIntervalSeconds){
+                _lastUpdate += _updateTimeDelta.Elapsed.Seconds;
+                _updateTimeDelta.Restart();
+                if (_lastUpdate > _repeatUpdateInterval){
+                    try{
+                        RefreshRepos();
+                        DispatchAnnouncements();
+                    }
+                    catch (Exception e){
+                        IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
+                        IrcInterface.DebugLog(e.Message);
+                        IrcInterface.DebugLog(e.StackTrace);
+                        IrcInterface.DebugLog("END EXCEPTION");
+                    }
                 }
-                catch (Exception e){
-                    IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
-                    IrcInterface.DebugLog(e.Message);
-                    IrcInterface.DebugLog(e.StackTrace);
-                    IrcInterface.DebugLog("END EXCEPTION");
-                }
-                _lastUpdate = secsSinceStart;
             }
         }
 
@@ -108,6 +116,7 @@ namespace Pikatwo{
                     var identifier = announcement.CommitHashStart + announcement.CommitHashEnd;
                     announceHistory.AnnouncedPushes.Add(identifier);
                 }
+                _lastUpdate = 0;
                 SaveAnnouncementHistory();
             }
         }
