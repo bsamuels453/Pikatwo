@@ -51,13 +51,14 @@ namespace Pikatwo{
         public ClientInterface IrcInterface { get; set; }
 
         public void Update(long secsSinceStart){
-            if (_updateTimeDelta.Elapsed.Seconds > _updateIntervalSeconds){
+            if (_updateTimeDelta.Elapsed.TotalSeconds > _updateIntervalSeconds){
                 _lastUpdate += _updateTimeDelta.Elapsed.Seconds;
                 _updateTimeDelta.Restart();
                 if (_lastUpdate > _repeatUpdateInterval){
                     try{
                         RefreshRepos();
                         DispatchAnnouncements();
+                        _lastUpdate = 0;
                     }
                     catch (Exception e){
                         IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
@@ -116,7 +117,6 @@ namespace Pikatwo{
                     var identifier = announcement.CommitHashStart + announcement.CommitHashEnd;
                     announceHistory.AnnouncedPushes.Add(identifier);
                 }
-                _lastUpdate = 0;
                 SaveAnnouncementHistory();
             }
         }
