@@ -52,7 +52,7 @@ namespace Pikatwo{
 
         public void Update(long secsSinceStart){
             if (_updateTimeDelta.Elapsed.TotalSeconds > _updateIntervalSeconds){
-                _lastUpdate += _updateTimeDelta.Elapsed.Seconds;
+                _lastUpdate += (long)_updateTimeDelta.Elapsed.TotalSeconds;
                 _updateTimeDelta.Restart();
                 if (_lastUpdate > _repeatUpdateInterval){
                     try{
