@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Meebey.SmartIrc4net;
 using Newtonsoft.Json;
 
@@ -109,6 +110,10 @@ namespace Pikatwo{
                 var replyToUse = _responses[replyIdx];
                 var response = replyToUse.Message.Insert(replyToUse.InsertOffset, ircEventArgs.Data.Nick);
                 _ircInterface.DebugLog("Response score: " + max);
+                //get # of words in response and delay according to 60wpm to be more convincing
+                var numwords = response.Split().Length;
+                Thread.Sleep(numwords * (1/60) * 1000);
+
                 _ircInterface.Client.SendMessage(SendType.Message, ircEventArgs.Data.Channel, response);
                 _responses.RemoveAt(replyIdx);
                 _responsesConsumed++;
