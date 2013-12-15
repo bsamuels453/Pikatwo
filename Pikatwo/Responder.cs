@@ -112,7 +112,7 @@ namespace Pikatwo{
                 _ircInterface.DebugLog("Response score: " + max);
                 //get # of words in response and delay according to 60wpm to be more convincing
                 var numwords = response.Split().Length;
-                Thread.Sleep(numwords * (1/60) * 1000);
+                Thread.Sleep((int)(numwords * (0.5f) * 1000));//30wpm
 
                 _ircInterface.Client.SendMessage(SendType.Message, ircEventArgs.Data.Channel, response);
                 _responses.RemoveAt(replyIdx);
