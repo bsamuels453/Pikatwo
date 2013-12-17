@@ -57,8 +57,10 @@ namespace Pikatwo{
                 if (_lastUpdate > _repeatUpdateInterval){
                     try{
                         RefreshRepos();
-                        DispatchAnnouncements();
-                        _lastUpdate = 0;
+                        var wasNewUpdateFound = DispatchAnnouncements();
+                        if (wasNewUpdateFound){
+                            _lastUpdate = 0;
+                        }
                     }
                     catch (Exception e){
                         IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
@@ -72,7 +74,8 @@ namespace Pikatwo{
 
         #endregion
 
-        void DispatchAnnouncements(){
+        bool DispatchAnnouncements(){
+            bool ret = false;
             var grouped = _queuedAnnouncements.GroupBy(announce => announce.RepoName);
             foreach (var repoAnnouncements in grouped){
                 var announceLi = repoAnnouncements.ToList();
@@ -116,9 +119,11 @@ namespace Pikatwo{
                 foreach (var announcement in announceLi){
                     var identifier = announcement.CommitHashStart + announcement.CommitHashEnd;
                     announceHistory.AnnouncedPushes.Add(identifier);
+                    ret = true;
                 }
                 SaveAnnouncementHistory();
             }
+            return ret;
         }
 
         void SaveAnnouncementHistory(){
