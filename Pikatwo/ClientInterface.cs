@@ -30,6 +30,7 @@ namespace Pikatwo{
             Client.SendDelay = 200;
             Client.ActiveChannelSyncing = true;
             _loginCreds = loginCreds;
+            Client.CtcpVersion = "Pikatwo - Interactive chatbot with lifelike texture by zalzane.";
 
             _authenticator = new Authenticator();
 
