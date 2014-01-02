@@ -4,7 +4,7 @@ Pikatwo is an IRC-enabled chat bot that logs IRC chatter, and uses it to constru
 
 This release contains the Pikatwo binary along with 42MB of response data. Since the response data was collected by an automated script, it may be vulgar in nature. The response data is not on github, and is only present in the release. If you wish to parse your own response data, you'll have to compile from source since the response data parser is not included in the release.
 
-This project is licenced under the Mozilla Public Licence 2.0.
+This project is licensed under the Mozilla Public Licence 2.0.
 http://www.mozilla.org/MPL/2.0/index.txt
 
 Changelog
