@@ -28,6 +28,13 @@ namespace Pikatwo{
         public void Update(long secsSinceStart){
         }
 
+        public string[] GetCmdDocs(){
+            return new[]{
+                ".encrypt <key> <data>",
+                ".decrypt <key> <data>"
+            };
+        }
+
         #endregion
 
         string AssembleMessage(List<string> msg){

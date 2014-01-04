@@ -25,6 +25,10 @@ namespace Pikatwo{
         public void Update(long secsSinceStart){
         }
 
+        public string[] GetCmdDocs(){
+            return new string[0];
+        }
+
         #endregion
 
         public void LoadAuthFile(){

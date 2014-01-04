@@ -50,6 +50,10 @@ namespace Pikatwo{
             }
         }
 
+        public string[] GetCmdDocs(){
+            return new string[0];
+        }
+
         #endregion
 
         void IrcInterfaceOnOnIrcCommand(OnCommandArgs args){

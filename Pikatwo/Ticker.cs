@@ -24,6 +24,14 @@ namespace Pikatwo{
         public void Update(long secsSinceStart){
         }
 
+        public string[] GetCmdDocs(){
+            return new[]{
+                ".bicker",
+                ".dicker",
+                ".licker"
+            };
+        }
+
         #endregion
 
         void ClientOnOnIrcCommand(OnCommandArgs args){
