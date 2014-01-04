@@ -114,9 +114,9 @@ namespace Pikatwo{
                 var replyToUse = _responses[replyIdx];
                 var response = replyToUse.Message.Insert(replyToUse.InsertOffset, ircEventArgs.Data.Nick);
                 _ircInterface.DebugLog("Response score: " + max);
-                //get # of words in response and delay according to 60wpm to be more convincing
+
                 var numwords = response.Split().Length;
-                Thread.Sleep((int)(numwords * (0.5f) * 1000));//30wpm
+                Thread.Sleep((numwords*200));
 
                 _ircInterface.Client.SendMessage(SendType.Message, ircEventArgs.Data.Channel, response);
                 _responses.RemoveAt(replyIdx);
