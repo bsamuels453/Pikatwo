@@ -29,6 +29,7 @@ namespace Pikatwo{
             components.Add(new GithubTracker());
             components.Add(new Encryptor());
             components.Add(new Ticker());
+            //components.Add(new HappyNewYear());
 
             var client = new ClientInterface(creds, components);
             client.Run();
