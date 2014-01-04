@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Meebey.SmartIrc4net;
 
@@ -80,7 +81,26 @@ namespace Pikatwo{
                 if (OnIrcCommand != null){
                     OnIrcCommand.Invoke(onCommand);
                 }
+                if (ircEventArgs.Data.Message.Equals(".help")){
+                    PrintCommandHelp(ircEventArgs.Data.Channel);
+                }
             }
+        }
+
+        void PrintCommandHelp(string channel){
+            var commands = new List<string>();
+            foreach (var component in _components){
+                var cpntCmd = component.GetCmdDocs().ToList();
+                commands.AddRange(cpntCmd);
+            }
+            var reply = "Commands: ";
+            foreach (var command in commands){
+                reply += command + ", ";
+            }
+            if (commands.Count > 0){
+                reply = reply.Substring(0, reply.Length - 2);
+            }
+            Client.SendMessage(SendType.Message, channel, reply);
         }
 
         public event OnIrcCommand OnIrcCommand;
