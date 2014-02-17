@@ -15,6 +15,7 @@ namespace Pikatwo{
             get { return _ircInterface; }
             set{
                 _ircInterface = value;
+                _ircInterface.Client.OnConnected += ClientOnOnConnected;
                 _ircInterface.Client.OnDisconnected += OnDisconnect;
                 _ircInterface.OnIrcCommand += IrcInterfaceOnOnIrcCommand;
             }
@@ -28,6 +29,10 @@ namespace Pikatwo{
         }
 
         #endregion
+
+        void ClientOnOnConnected(object sender, EventArgs eventArgs){
+            _ircInterface.DebugLog("Connected to server.");
+        }
 
         void IrcInterfaceOnOnIrcCommand(OnCommandArgs args){
             if (args.AuthLevel == AuthLevel.Admin){
@@ -47,9 +52,8 @@ namespace Pikatwo{
         }
 
         void OnDisconnect(object sender, EventArgs eventArgs){
+            //should automagically reconnect w/ irc4net setting set
             _ircInterface.DebugLog("Disconnected from server. Attempting reconnect...");
-            _ircInterface.Connect();
-            _ircInterface.DebugLog("Reconnection successful.");
         }
     }
 }
