@@ -54,6 +54,7 @@ namespace Pikatwo{
             if (_updateTimeDelta.Elapsed.TotalSeconds > _updateIntervalSeconds){
                 _lastUpdate += (long) _updateTimeDelta.Elapsed.TotalSeconds;
                 _updateTimeDelta.Restart();
+
                 if (_lastUpdate > _repeatUpdateInterval){
                     try{
                         RefreshRepos();
@@ -61,6 +62,7 @@ namespace Pikatwo{
                         if (wasNewUpdateFound){
                             _lastUpdate = 0;
                         }
+                        IrcInterface.DebugLog("Github update executed successfully.");
                     }
                     catch (Exception e){
                         IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
@@ -138,7 +140,7 @@ namespace Pikatwo{
         }
 
         void RefreshRepos(){
-            var client = new WebClient();
+            var client = new TimedWebClient();
             var rssStr = client.DownloadString(_rssUrl);
             client.Dispose();
 
@@ -176,7 +178,7 @@ namespace Pikatwo{
                 int.Parse(publishTime.Substring(17, 2))
                 );
 
-            var client = new WebClient();
+            var client = new TimedWebClient();
             var commitPage = client.DownloadString(rawLink);
             var doc = new HtmlDocument();
             doc.LoadHtml(commitPage);
@@ -234,6 +236,18 @@ namespace Pikatwo{
         class RepoAnnounceHistory{
             public List<string> AnnouncedPushes;
             public string RepoName;
+        }
+
+        #endregion
+
+        #region Nested type: TimedWebClient
+
+        class TimedWebClient : WebClient{
+            protected override WebRequest GetWebRequest(Uri uri){
+                var w = base.GetWebRequest(uri);
+                w.Timeout = 10*1000;
+                return w;
+            }
         }
 
         #endregion
