@@ -30,7 +30,7 @@ namespace Pikatwo{
             Client = new IrcClient();
             Client.SendDelay = 200;
             Client.ActiveChannelSyncing = true;
-            Client.AutoRetry = true;
+            //Client.AutoRetry = true;
             _loginCreds = loginCreds;
             Client.CtcpVersion = "Pikatwo - Interactive chatbot with lifelike texture by zalzane.";
 

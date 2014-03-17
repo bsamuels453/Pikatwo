@@ -54,6 +54,8 @@ namespace Pikatwo{
         void OnDisconnect(object sender, EventArgs eventArgs){
             //should automagically reconnect w/ irc4net setting set
             _ircInterface.DebugLog("Disconnected from server. Attempting reconnect...");
+            _ircInterface.Connect();
+            _ircInterface.DebugLog("Reconnection successful.");
         }
     }
 }
