@@ -11,7 +11,8 @@
     <RootNamespace>Pikatwo</RootNamespace>
     <AssemblyName>Pikatwo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -25,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Release\</OutputPath>
@@ -40,12 +41,11 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\ThirdParty\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Meebey.SmartIrc4net">
+      <HintPath>..\ThirdParty\Meebey.SmartIrc4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\ThirdParty\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="smartirc4net, Version=0.4.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ThirdParty\smartirc4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -65,6 +65,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Responder.cs" />
     <Compile Include="Ticker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
