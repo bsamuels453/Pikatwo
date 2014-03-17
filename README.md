@@ -1,4 +1,4 @@
-Pikatwo 1.0.0
+Pikatwo 1.1.0
 =========
 Pikatwo is an IRC-enabled chat bot that logs IRC chatter, and uses it to construct a log full of commentary. The bot will then regurgitate this commentary in a hopefully-amusing fashion when someone speaks to it on IRC.
 
@@ -9,6 +9,19 @@ http://www.mozilla.org/MPL/2.0/index.txt
 
 Changelog
 =========
+
+1.1.0:
+
+-Fixed handful of bugs having to do with github tracker announcements
+
+-Added "!tell" phrase to hash banlist
+
+-Added snarky ctcp reply that's broken thanks to meeblyirc4.net being crap
+
+-Added .help function
+
+-Drastically reduced timeout for github rss feed requests, which in turn fixed a lot of lag issues
+
 1.0.0:
 
 -Release
