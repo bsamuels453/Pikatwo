@@ -7,6 +7,7 @@ Thumbs.db
 *.vspscc
 *_i.c
 *_p.c
+*.exe.config
 *.ncb
 *.suo
 *.bak
