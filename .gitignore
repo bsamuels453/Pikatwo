@@ -35,6 +35,7 @@ TestProject3*/
 *.application
 *.xnb
 *.exe.manifest
+Packaged*/
 *.pdb
 *.pfx
 *.dll
