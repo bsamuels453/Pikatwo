@@ -56,7 +56,7 @@ namespace Pikatwo{
 
         string GenerateVircurexTicker(string refCurrency, string targCurrency){
             var wclient = new WebClient();
-            var ticker = wclient.DownloadString("https://vircurex.com/api/get_info_for_1_currency.json?base=" + targCurrency + "&alt=" + refCurrency);
+            var ticker = wclient.DownloadString("https://api.vircurex.com/api/get_info_for_1_currency.json?base=" + targCurrency + "&alt=" + refCurrency);
             var jticker = JObject.Parse(ticker);
             wclient.Dispose();
 
