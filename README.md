@@ -6,7 +6,7 @@ This release contains the Pikatwo binary along with 42MB of response data. Since
 
 IF YOU WANT TO COMPILE FROM SOURCE:
 
-You can grab the dependency binaries in the github release under "releases" section. The dependencies are:
+You can grab the dependency binaries in the github release under ["releases" section](https://github.com/bsamuels453/Pikatwo/releases). The dependencies are:
 
 log4net.dll
 
