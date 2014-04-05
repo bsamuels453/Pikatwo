@@ -113,7 +113,7 @@ namespace Pikatwo{
                 var replyIdx = Array.IndexOf(scores, max);
                 var replyToUse = _responses[replyIdx];
                 var response = replyToUse.Message.Insert(replyToUse.InsertOffset, ircEventArgs.Data.Nick);
-                _ircInterface.DebugLog("Response score: " + max);
+                //_ircInterface.DebugLog("Response score: " + max);
 
                 //var numwords = response.Split().Length;
                 //Thread.Sleep((numwords*200));

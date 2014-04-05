@@ -62,7 +62,7 @@ namespace Pikatwo{
                         if (wasNewUpdateFound){
                             _lastUpdate = 0;
                         }
-                        IrcInterface.DebugLog("Github update executed successfully.");
+                        //IrcInterface.DebugLog("Github update executed successfully.");
                     }
                     catch (Exception e){
                         IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
