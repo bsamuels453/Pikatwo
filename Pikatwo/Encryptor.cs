@@ -134,11 +134,11 @@ namespace Pikatwo{
 
 
         public static byte[] AsciiToBase10(char[] ascii){
-            return System.Text.Encoding.ASCII.GetBytes(ascii);
+            return System.Text.Encoding.UTF8.GetBytes(ascii);
         }
 
         public static char[] Base10ToAscii(byte[] base10){
-            return System.Text.Encoding.ASCII.GetString(base10).ToCharArray();
+            return System.Text.Encoding.UTF8.GetString(base10).ToCharArray();
         }
 
         public static byte[] PKCS7(byte[] str, int length){
