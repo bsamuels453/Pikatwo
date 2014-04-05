@@ -124,9 +124,11 @@ namespace Pikatwo{
         }
 
         public void DebugLog(string text){
-            var unixTime = (long) ((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds);
-            _debugWriter.WriteLine(unixTime + " " + text);
-            _debugWriter.Flush();
+            lock (_debugWriter){
+                var unixTime = (long) ((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds);
+                _debugWriter.WriteLine(unixTime + " " + text);
+                _debugWriter.Flush();
+            }
         }
 
         public void Connect(){
