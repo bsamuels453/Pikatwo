@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Meebey.SmartIrc4net;
 using Newtonsoft.Json;
 
