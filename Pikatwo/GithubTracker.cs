@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Meebey.SmartIrc4net;
 using Newtonsoft.Json;
@@ -46,9 +47,24 @@ namespace Pikatwo{
             }
         }
 
+
+        Task _updateTask;
+
         #region IrcComponent Members
 
         public ClientInterface IrcInterface { get; set; }
+
+        void UpdateGithubStuff() {
+            try{
+                RefreshRepos();
+            }
+            catch (Exception e){
+                        IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
+                        IrcInterface.DebugLog(e.Message);
+                        IrcInterface.DebugLog(e.StackTrace);
+                        IrcInterface.DebugLog("END EXCEPTION");
+                    }
+        }
 
         public void Update(long secsSinceStart){
             if (_updateTimeDelta.Elapsed.TotalSeconds > _updateIntervalSeconds){
@@ -56,19 +72,16 @@ namespace Pikatwo{
                 _updateTimeDelta.Restart();
 
                 if (_lastUpdate > _repeatUpdateInterval){
-                    try{
-                        RefreshRepos();
+                    _updateTask = new Task(UpdateGithubStuff);
+                    _updateTask.Start();
+                }
+
+                lock (_queuedAnnouncements){
+                    if(_queuedAnnouncements.Count != 0){
                         var wasNewUpdateFound = DispatchAnnouncements();
                         if (wasNewUpdateFound){
                             _lastUpdate = 0;
                         }
-                        //IrcInterface.DebugLog("Github update executed successfully.");
-                    }
-                    catch (Exception e){
-                        IrcInterface.DebugLog("EXCEPTION: GithubTracker Update()");
-                        IrcInterface.DebugLog(e.Message);
-                        IrcInterface.DebugLog(e.StackTrace);
-                        IrcInterface.DebugLog("END EXCEPTION");
                     }
                 }
             }
@@ -191,18 +204,20 @@ namespace Pikatwo{
 
 
             if (_subscribedProjects.Contains(repoName)){
-                _queuedAnnouncements.Add
-                    (new QueuedAnnouncement
-                        (
-                        author,
-                        link,
-                        repoName,
-                        timestamp,
-                        beginCommit,
-                        endCommit,
-                        numCommits
-                        )
-                    );
+                lock (_queuedAnnouncements){
+                    _queuedAnnouncements.Add
+                        (new QueuedAnnouncement
+                            (
+                            author,
+                            link,
+                            repoName,
+                            timestamp,
+                            beginCommit,
+                            endCommit,
+                            numCommits
+                            )
+                        );
+                }
             }
         }
 
@@ -245,7 +260,7 @@ namespace Pikatwo{
         class TimedWebClient : WebClient{
             protected override WebRequest GetWebRequest(Uri uri){
                 var w = base.GetWebRequest(uri);
-                w.Timeout = 10*1000;
+                w.Timeout = 60*1000;
                 return w;
             }
         }
