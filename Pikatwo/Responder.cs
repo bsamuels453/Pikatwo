@@ -78,6 +78,7 @@ namespace Pikatwo{
 
             Debug.Assert(responses != null);
             _responses = responses;
+            GC.Collect(3);
         }
 
         static Dictionary<int, int> GenerateMsgHashes(string msg){
