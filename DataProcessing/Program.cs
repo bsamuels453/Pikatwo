@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace DataProcessing{
     internal class Program{
         const long _context = 5;
-        const int _repliesPerFile = 10000;
+        const int _repliesPerFile = 20000;
 
         static void Main(string[] args){
             StripExcessData();
